@@ -59,7 +59,7 @@ analyzeBtn.addEventListener("click",()=>{
 
 
         animateScore(82);
-
+updateCircle();
 
         analyzeBtn.innerText="Analyze";
 
