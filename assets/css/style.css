@@ -271,3 +271,86 @@ header{
     border-left:3px solid #ffd000;
 
 }
+
+/* =========================
+   REPORT SUMMARY
+========================= */
+
+
+.report-summary{
+
+    margin-top:50px;
+
+    background:#111;
+
+    border:1px solid #222;
+
+    border-radius:20px;
+
+    padding:35px;
+
+}
+
+
+.report-summary h2{
+
+    margin-bottom:30px;
+
+}
+
+
+.report-item{
+
+    display:flex;
+
+    justify-content:space-between;
+
+    padding:18px 0;
+
+    border-bottom:1px solid #222;
+
+}
+
+
+.report-item span{
+
+    color:#aaa;
+
+}
+
+
+.good{
+
+    color:#00ff88;
+
+}
+
+
+.medium{
+
+    color:#ffd000;
+
+}
+
+
+.recommendations{
+
+    margin-top:35px;
+
+}
+
+
+.recommendations h3{
+
+    margin-bottom:15px;
+
+}
+
+
+.recommendations li{
+
+    color:#aaa;
+
+    margin:12px 0;
+
+}
