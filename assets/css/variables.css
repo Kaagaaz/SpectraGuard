@@ -1,1 +1,21 @@
+:root {
 
+    --background: #000000;
+
+    --surface: #111111;
+
+    --border: #222222;
+
+    --text: #ffffff;
+
+    --secondary-text: #9d9d9d;
+
+    --primary: #00bfff;
+
+    --primary-hover: #27c8ff;
+
+    --radius: 16px;
+
+    --transition: 0.3s;
+
+}
