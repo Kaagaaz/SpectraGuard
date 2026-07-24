@@ -1,24 +1,36 @@
 const analyzeBtn = document.getElementById("analyzeBtn");
+
 const results = document.getElementById("results");
 
-
-analyzeBtn.addEventListener("click", () => {
-
-    analyzeBtn.innerText = "Scanning...";
-
-    analyzeBtn.disabled = true;
+const scannerAnimation = document.getElementById("scannerAnimation");
 
 
-    setTimeout(() => {
+analyzeBtn.addEventListener("click",()=>{
+
+
+    analyzeBtn.innerText="Scanning...";
+
+    analyzeBtn.disabled=true;
+
+
+    scannerAnimation.classList.remove("hidden");
+
+
+    setTimeout(()=>{
+
+
+        scannerAnimation.classList.add("hidden");
+
 
         results.classList.remove("hidden");
 
-        analyzeBtn.innerText = "Analyze";
 
-        analyzeBtn.disabled = false;
+        analyzeBtn.innerText="Analyze";
+
+        analyzeBtn.disabled=false;
 
 
-    }, 2000);
+    },3000);
 
 
 });
