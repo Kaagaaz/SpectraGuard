@@ -203,6 +203,59 @@ function generateReport(url){
 // Analyze Button
 // =========================
 
+async function fetchReport(url){
+
+    try{
+
+
+        const response = await fetch(
+        "https://spectra-guard-api.kaagaazcoder-safe.workers.dev/scan?url="
+        + encodeURIComponent(url)
+        );
+
+
+        const data = await response.json();
+
+
+
+        // Update score
+
+        animateScore(data.privacy_score);
+
+        updateCircle(data.privacy_score);
+
+
+
+        // Update report cards
+
+        document.getElementById("trackerResult").innerText =
+        data.trackers + " trackers detected";
+
+
+        document.getElementById("cookieResult").innerText =
+        data.cookies + " cookies found";
+
+
+        document.getElementById("httpsResult").innerText =
+        data.https
+        ? "HTTPS connection detected"
+        : "HTTPS not detected";
+
+
+
+    }
+
+
+    catch(error){
+
+        alert("Unable to connect to Spectra Guard API");
+
+        console.log(error);
+
+    }
+
+}
+
 analyzeBtn.addEventListener("click",()=>{
 
 
@@ -247,14 +300,7 @@ analyzeBtn.addEventListener("click",()=>{
 
 
 
-        const finalScore = generateReport(url);
-
-
-
-        animateScore(finalScore);
-
-        updateCircle(finalScore);
-
+        fetchReport(url);
 
 
         analyzeBtn.innerText = "Analyze";
