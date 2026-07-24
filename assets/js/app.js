@@ -9,7 +9,10 @@ const scoreNumber = document.getElementById("scoreNumber");
 const scoreCircle = document.querySelector(".score-circle");
 
 
-// Animate privacy score number
+// =========================
+// Privacy Score Animation
+// =========================
+
 function animateScore(target){
 
     let current = 0;
@@ -33,7 +36,10 @@ function animateScore(target){
 
 
 
-// Animate score circle
+// =========================
+// Score Circle Animation
+// =========================
+
 function updateCircle(target){
 
     let progress = 0;
@@ -65,29 +71,88 @@ function updateCircle(target){
 
 
 
-// Analyze button click
+// =========================
+// Scan Steps Animation
+// =========================
+
+function runScanSteps(){
+
+    const steps = [
+        "step1",
+        "step2",
+        "step3",
+        "step4"
+    ];
+
+
+    steps.forEach((step,index)=>{
+
+
+        setTimeout(()=>{
+
+
+            const element = document.getElementById(step);
+
+
+            if(index > 0){
+
+                const previous =
+                document.getElementById(steps[index-1]);
+
+
+                previous.classList.remove("active");
+
+                previous.classList.add("done");
+
+            }
+
+
+            element.classList.add("active");
+
+
+        }, index * 700);
+
+
+    });
+
+}
+
+
+
+// =========================
+// Analyze Button
+// =========================
+
 analyzeBtn.addEventListener("click",()=>{
 
 
-    // Change button
+    // Button change
+
     analyzeBtn.innerText = "Scanning...";
 
     analyzeBtn.disabled = true;
 
 
 
-    // Reset previous result
+    // Hide old results
 
     results.classList.add("hidden");
 
 
-    // Show scanner animation
+
+    // Show scanner
 
     scannerAnimation.classList.remove("hidden");
 
 
 
-    // Simulate scanning time
+    // Start scan steps
+
+    runScanSteps();
+
+
+
+    // Fake scanning delay
 
     setTimeout(()=>{
 
@@ -104,7 +169,7 @@ analyzeBtn.addEventListener("click",()=>{
 
 
 
-        // Start animations
+        // Start score animations
 
         animateScore(82);
 
@@ -112,7 +177,7 @@ analyzeBtn.addEventListener("click",()=>{
 
 
 
-        // Restore button
+        // Reset button
 
         analyzeBtn.innerText = "Analyze";
 
