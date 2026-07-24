@@ -205,3 +205,69 @@ header{
     color:#9d9d9d;
 
 }
+
+.status{
+
+    font-size:13px;
+
+    margin-bottom:15px;
+
+}
+
+
+.info-card{
+
+    background:#111;
+
+    border:1px solid #222;
+
+    border-radius:18px;
+
+    padding:25px;
+
+    transition:.3s;
+
+}
+
+
+.info-card:hover{
+
+    transform:translateY(-5px);
+
+    border-color:#00bfff;
+
+}
+
+
+.info-card h3{
+
+    font-size:20px;
+
+    margin-bottom:10px;
+
+}
+
+
+.info-card p{
+
+    color:#999;
+
+    line-height:1.6;
+
+}
+
+
+/* Status colors */
+
+.safe{
+
+    border-left:3px solid #00ff88;
+
+}
+
+
+.warning{
+
+    border-left:3px solid #ffd000;
+
+}
