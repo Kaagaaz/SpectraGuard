@@ -354,3 +354,71 @@ header{
     margin:12px 0;
 
 }
+
+/* =========================
+   SCORE CIRCLE
+========================= */
+
+
+.score-circle{
+
+    width:180px;
+
+    height:180px;
+
+    border-radius:50%;
+
+    margin:30px auto;
+
+    display:flex;
+
+    align-items:center;
+
+    justify-content:center;
+
+    background:
+    conic-gradient(
+        #00bfff 82%,
+        #222 0%
+    );
+
+}
+
+
+.score{
+
+    width:150px;
+
+    height:150px;
+
+    border-radius:50%;
+
+    background:#000;
+
+    display:flex;
+
+    align-items:center;
+
+    justify-content:center;
+
+    flex-direction:column;
+
+}
+
+
+.score span{
+
+    font-size:55px;
+
+    color:#00bfff;
+
+}
+
+
+.score small{
+
+    color:#888;
+
+    font-size:18px;
+
+}
