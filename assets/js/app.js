@@ -8,10 +8,10 @@ const scoreNumber = document.getElementById("scoreNumber");
 
 const scoreCircle = document.querySelector(".score-circle");
 
+const urlInput = document.getElementById("urlInput");
 
-// =========================
+
 // Privacy Score Animation
-// =========================
 
 function animateScore(target){
 
@@ -23,11 +23,8 @@ function animateScore(target){
 
         scoreNumber.innerText = current;
 
-
         if(current >= target){
-
             clearInterval(interval);
-
         }
 
     },20);
@@ -36,20 +33,15 @@ function animateScore(target){
 
 
 
-// =========================
 // Score Circle Animation
-// =========================
 
 function updateCircle(target){
 
     let progress = 0;
 
-
     const animation = setInterval(()=>{
 
-
         progress++;
-
 
         scoreCircle.style.background =
         `conic-gradient(
@@ -57,13 +49,9 @@ function updateCircle(target){
             #222 0%
         )`;
 
-
         if(progress >= target){
-
             clearInterval(animation);
-
         }
-
 
     },20);
 
@@ -71,9 +59,7 @@ function updateCircle(target){
 
 
 
-// =========================
-// Scan Steps Animation
-// =========================
+// Scan Steps
 
 function runScanSteps(){
 
@@ -87,18 +73,16 @@ function runScanSteps(){
 
     steps.forEach((step,index)=>{
 
-
         setTimeout(()=>{
 
-
-            const element = document.getElementById(step);
+            const element =
+            document.getElementById(step);
 
 
             if(index > 0){
 
                 const previous =
                 document.getElementById(steps[index-1]);
-
 
                 previous.classList.remove("active");
 
@@ -112,21 +96,32 @@ function runScanSteps(){
 
         }, index * 700);
 
-
     });
 
 }
 
 
 
-// =========================
 // Analyze Button
-// =========================
 
 analyzeBtn.addEventListener("click",()=>{
 
 
-    // Button change
+    const url = urlInput.value.trim();
+
+
+
+    // URL Check
+
+    if(url === ""){
+
+        alert("Please enter a website URL.");
+
+        return;
+
+    }
+
+
 
     analyzeBtn.innerText = "Scanning...";
 
@@ -134,50 +129,30 @@ analyzeBtn.addEventListener("click",()=>{
 
 
 
-    // Hide old results
-
     results.classList.add("hidden");
 
 
-
-    // Show scanner
-
     scannerAnimation.classList.remove("hidden");
 
-
-
-    // Start scan steps
 
     runScanSteps();
 
 
 
-    // Fake scanning delay
-
     setTimeout(()=>{
 
-
-        // Hide scanner
 
         scannerAnimation.classList.add("hidden");
 
 
-
-        // Show results
-
         results.classList.remove("hidden");
 
-
-
-        // Start score animations
 
         animateScore(82);
 
         updateCircle(82);
 
 
-
-        // Reset button
 
         analyzeBtn.innerText = "Analyze";
 
