@@ -1,315 +1,128 @@
-const analyzeBtn = document.getElementById("analyzeBtn");
+export default {
+  async fetch(request) {
 
-const results = document.getElementById("results");
 
-const scannerAnimation = document.getElementById("scannerAnimation");
+    const corsHeaders = {
 
-const scoreNumber = document.getElementById("scoreNumber");
+      "Access-Control-Allow-Origin": "*",
 
-const scoreCircle = document.querySelector(".score-circle");
+      "Access-Control-Allow-Methods": "GET, OPTIONS",
 
-const urlInput = document.getElementById("urlInput");
+      "Access-Control-Allow-Headers": "Content-Type",
 
+    };
 
-// =========================
-// Privacy Score Animation
-// =========================
 
-function animateScore(target){
 
-    let current = 0;
+    // Handle CORS preflight
 
+    if(request.method === "OPTIONS"){
 
-    const interval = setInterval(()=>{
+      return new Response(null, {
 
+        headers: corsHeaders
 
-        current++;
-
-        scoreNumber.innerText = current;
-
-
-        if(current >= target){
-
-            clearInterval(interval);
-
-        }
-
-
-    },20);
-
-}
-
-
-
-// =========================
-// Score Circle Animation
-// =========================
-
-function updateCircle(target){
-
-    let progress = 0;
-
-
-    const animation = setInterval(()=>{
-
-
-        progress++;
-
-
-        scoreCircle.style.background =
-        `conic-gradient(
-            #00bfff ${progress}%,
-            #222 0%
-        )`;
-
-
-        if(progress >= target){
-
-            clearInterval(animation);
-
-        }
-
-
-    },20);
-
-}
-
-
-
-// =========================
-// Scan Steps Animation
-// =========================
-
-function runScanSteps(){
-
-    const steps = [
-        "step1",
-        "step2",
-        "step3",
-        "step4"
-    ];
-
-
-    steps.forEach((step,index)=>{
-
-
-        setTimeout(()=>{
-
-
-            const element = document.getElementById(step);
-
-
-            if(index > 0){
-
-                const previous =
-                document.getElementById(steps[index-1]);
-
-
-                previous.classList.remove("active");
-
-                previous.classList.add("done");
-
-            }
-
-
-            element.classList.add("active");
-
-
-        }, index * 700);
-
-
-    });
-
-}
-
-
-
-// =========================
-// Generate Demo Report
-// =========================
-
-function generateReport(url){
-
-    let score = 82;
-
-
-    if(url.includes("google")){
-
-        score = 90;
-
-    }
-
-
-    if(
-        url.includes("facebook") ||
-        url.includes("instagram")
-    ){
-
-        score = 65;
+      });
 
     }
 
 
 
-    const trackerResult =
-    document.getElementById("trackerResult");
-
-
-    const cookieResult =
-    document.getElementById("cookieResult");
-
-
-    const httpsResult =
-    document.getElementById("httpsResult");
+    const url = new URL(request.url);
 
 
 
-    if(score < 70){
+    // Scan API
 
-        trackerResult.innerText =
-        "Many third-party trackers detected";
-
-
-        cookieResult.innerText =
-        "High number of cookies found";
-
-
-    }
-    else{
-
-        trackerResult.innerText =
-        "Few trackers detected";
-
-
-        cookieResult.innerText =
-        "Moderate cookies found";
-
-    }
+    if(url.pathname === "/scan"){
 
 
 
-    httpsResult.innerText =
-    "HTTPS connection detected";
+      const website = url.searchParams.get("url");
 
 
 
-    return score;
-
-}
+      if(!website){
 
 
+        return Response.json(
 
-// =========================
-// Analyze Button
-// =========================
+          {
 
-async function fetchReport(url){
+            error:"No website provided"
 
-    try{
+          },
 
+          {
 
-        const response = await fetch(
-        "https://spectra-guard-api.kaagaazcoder-safe.workers.dev/scan?url="
-        + encodeURIComponent(url)
+            headers:corsHeaders
+
+          }
+
         );
 
-
-        const data = await response.json();
-
-
-
-        // Update score
-
-        animateScore(data.privacy_score);
-
-        updateCircle(data.privacy_score);
+      }
 
 
 
-        // Update report cards
+      // Temporary demo analysis
 
-        document.getElementById("trackerResult").innerText =
-        data.trackers + " trackers detected";
-
-
-        document.getElementById("cookieResult").innerText =
-        data.cookies + " cookies found";
+      const score = Math.floor(
+        Math.random() * (95 - 60 + 1)
+      ) + 60;
 
 
-        document.getElementById("httpsResult").innerText =
-        data.https
-        ? "HTTPS connection detected"
-        : "HTTPS not detected";
 
+      return Response.json(
+
+        {
+
+          website: website,
+
+          privacy_score: score,
+
+          https: true,
+
+          cookies: 8,
+
+          trackers: 2,
+
+          message:"Analysis completed"
+
+        },
+
+        {
+
+          headers:corsHeaders
+
+        }
+
+      );
 
 
     }
 
 
-    catch(error){
 
-        alert("Unable to connect to Spectra Guard API");
+    // Default route
 
-        console.log(error);
+    return Response.json(
 
-    }
+      {
 
-}
+        status:"Spectra Guard API Running"
 
-analyzeBtn.addEventListener("click",()=>{
+      },
 
+      {
 
-    const url = urlInput.value.trim();
+        headers:corsHeaders
 
+      }
 
-
-    if(url === ""){
-
-        alert("Please enter a website URL.");
-
-        return;
-
-    }
+    );
 
 
+  },
 
-    analyzeBtn.innerText = "Scanning...";
-
-    analyzeBtn.disabled = true;
-
-
-
-    results.classList.add("hidden");
-
-
-    scannerAnimation.classList.remove("hidden");
-
-
-
-    runScanSteps();
-
-
-
-    setTimeout(()=>{
-
-
-        scannerAnimation.classList.add("hidden");
-
-
-        results.classList.remove("hidden");
-
-
-
-        fetchReport(url);
-
-
-        analyzeBtn.innerText = "Analyze";
-
-        analyzeBtn.disabled = false;
-
-
-
-    },3000);
-
-
-});
+};
