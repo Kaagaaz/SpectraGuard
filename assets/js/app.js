@@ -11,21 +11,29 @@ const scoreCircle = document.querySelector(".score-circle");
 const urlInput = document.getElementById("urlInput");
 
 
+// =========================
 // Privacy Score Animation
+// =========================
 
 function animateScore(target){
 
     let current = 0;
 
+
     const interval = setInterval(()=>{
+
 
         current++;
 
         scoreNumber.innerText = current;
 
+
         if(current >= target){
+
             clearInterval(interval);
+
         }
+
 
     },20);
 
@@ -33,15 +41,20 @@ function animateScore(target){
 
 
 
+// =========================
 // Score Circle Animation
+// =========================
 
 function updateCircle(target){
 
     let progress = 0;
 
+
     const animation = setInterval(()=>{
 
+
         progress++;
+
 
         scoreCircle.style.background =
         `conic-gradient(
@@ -49,9 +62,13 @@ function updateCircle(target){
             #222 0%
         )`;
 
+
         if(progress >= target){
+
             clearInterval(animation);
+
         }
+
 
     },20);
 
@@ -59,7 +76,9 @@ function updateCircle(target){
 
 
 
-// Scan Steps
+// =========================
+// Scan Steps Animation
+// =========================
 
 function runScanSteps(){
 
@@ -73,16 +92,18 @@ function runScanSteps(){
 
     steps.forEach((step,index)=>{
 
+
         setTimeout(()=>{
 
-            const element =
-            document.getElementById(step);
+
+            const element = document.getElementById(step);
 
 
             if(index > 0){
 
                 const previous =
                 document.getElementById(steps[index-1]);
+
 
                 previous.classList.remove("active");
 
@@ -96,13 +117,91 @@ function runScanSteps(){
 
         }, index * 700);
 
+
     });
 
 }
 
 
 
+// =========================
+// Generate Demo Report
+// =========================
+
+function generateReport(url){
+
+    let score = 82;
+
+
+    if(url.includes("google")){
+
+        score = 90;
+
+    }
+
+
+    if(
+        url.includes("facebook") ||
+        url.includes("instagram")
+    ){
+
+        score = 65;
+
+    }
+
+
+
+    const trackerResult =
+    document.getElementById("trackerResult");
+
+
+    const cookieResult =
+    document.getElementById("cookieResult");
+
+
+    const httpsResult =
+    document.getElementById("httpsResult");
+
+
+
+    if(score < 70){
+
+        trackerResult.innerText =
+        "Many third-party trackers detected";
+
+
+        cookieResult.innerText =
+        "High number of cookies found";
+
+
+    }
+    else{
+
+        trackerResult.innerText =
+        "Few trackers detected";
+
+
+        cookieResult.innerText =
+        "Moderate cookies found";
+
+    }
+
+
+
+    httpsResult.innerText =
+    "HTTPS connection detected";
+
+
+
+    return score;
+
+}
+
+
+
+// =========================
 // Analyze Button
+// =========================
 
 analyzeBtn.addEventListener("click",()=>{
 
@@ -110,8 +209,6 @@ analyzeBtn.addEventListener("click",()=>{
     const url = urlInput.value.trim();
 
 
-
-    // URL Check
 
     if(url === ""){
 
@@ -135,6 +232,7 @@ analyzeBtn.addEventListener("click",()=>{
     scannerAnimation.classList.remove("hidden");
 
 
+
     runScanSteps();
 
 
@@ -148,9 +246,14 @@ analyzeBtn.addEventListener("click",()=>{
         results.classList.remove("hidden");
 
 
-        animateScore(82);
 
-        updateCircle(82);
+        const finalScore = generateReport(url);
+
+
+
+        animateScore(finalScore);
+
+        updateCircle(finalScore);
 
 
 
