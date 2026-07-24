@@ -1,1 +1,119 @@
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+}
 
+body{
+
+    background:var(--background);
+
+    color:var(--text);
+
+    font-family:'Audiowide',sans-serif;
+
+    min-height:100vh;
+
+}
+
+header{
+
+    display:flex;
+
+    justify-content:center;
+
+    padding:35px 0;
+
+}
+
+.logo{
+
+    font-size:2rem;
+
+    letter-spacing:3px;
+
+}
+
+.hero{
+
+    width:min(900px,90%);
+
+    margin:auto;
+
+    text-align:center;
+
+    margin-top:80px;
+
+}
+
+.hero h1{
+
+    font-size:3rem;
+
+    line-height:1.3;
+
+}
+
+.hero p{
+
+    margin-top:20px;
+
+    color:var(--secondary-text);
+
+    line-height:1.8;
+
+}
+
+.scan-box{
+
+    margin-top:45px;
+
+    display:flex;
+
+    justify-content:center;
+
+    gap:15px;
+
+}
+
+.scan-box input{
+
+    width:500px;
+
+    padding:18px;
+
+    background:#111;
+
+    border:1px solid var(--border);
+
+    border-radius:var(--radius);
+
+    color:white;
+
+    outline:none;
+
+}
+
+.scan-box button{
+
+    padding:18px 35px;
+
+    background:var(--primary);
+
+    border:none;
+
+    border-radius:var(--radius);
+
+    cursor:pointer;
+
+    font-family:'Audiowide',sans-serif;
+
+    transition:var(--transition);
+
+}
+
+.scan-box button:hover{
+
+    background:var(--primary-hover);
+
+}
