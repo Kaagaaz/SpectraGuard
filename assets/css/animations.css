@@ -56,3 +56,42 @@
     }
 
 }
+
+.scan-steps{
+
+    margin-top:30px;
+
+    text-align:left;
+
+    width:300px;
+
+    margin-left:auto;
+
+    margin-right:auto;
+
+}
+
+
+.scan-steps div{
+
+    margin:15px 0;
+
+    color:#777;
+
+    transition:.3s;
+
+}
+
+
+.scan-steps .active{
+
+    color:#00bfff;
+
+}
+
+
+.scan-steps .done{
+
+    color:#00ff88;
+
+}
