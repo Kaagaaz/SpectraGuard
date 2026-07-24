@@ -19,6 +19,7 @@ function animateScore(target){
 
     let current = 0;
 
+    scoreNumber.innerText = "0";
 
     const interval = setInterval(()=>{
 
@@ -37,7 +38,6 @@ function animateScore(target){
     },20);
 
 }
-
 
 
 // =========================
