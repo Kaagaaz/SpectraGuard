@@ -57,22 +57,29 @@
                 Analyze cookies, trackers, permissions and privacy signals
                 before you trust a website.
             </p>
-
             <div class="scan-box">
 
-                <input
-                    type="url"
-                    placeholder="https://example.com">
+    <input
+    id="urlInput"
+    type="url"
+    placeholder="https://example.com">
 
-                <button id="analyzeBtn">
+    <button id="analyzeBtn">
+        Analyze
+    </button>
 
-                    Analyze
+</div>
 
-                </button>
 
-            </div>
+<div id="scannerAnimation" class="scanner-animation hidden">
 
-        </section>
+    <div class="scanner-line"></div>
+
+    <p>
+        Analyzing website security...
+    </p>
+
+</div>
 <!-- =========================
      Results
 ========================= -->
