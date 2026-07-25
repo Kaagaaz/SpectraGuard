@@ -1,6 +1,8 @@
-const analyzeBtn = document.getElementById("analyzeBtn");
+const analyzeBtn =
+document.getElementById("analyzeBtn");
 
-const results = document.getElementById("results");
+const results =
+document.getElementById("results");
 
 const scannerAnimation =
 document.getElementById("scannerAnimation");
@@ -15,53 +17,42 @@ const urlInput =
 document.getElementById("urlInput");
 
 
-let scoreAnimation;
+let scoreTimer;
 
 
-// =====================
-// Score Animation
-// =====================
+
 
 function animateScore(target){
 
 
-clearInterval(scoreAnimation);
+clearInterval(scoreTimer);
 
 
-target = Number(target);
-
-
-if(isNaN(target)){
-target = 0;
-}
-
-
-target = Math.max(0, Math.min(100,target));
+target =
+Math.max(0,Math.min(100,Number(target)));
 
 
 
-let current = 0;
+let current=0;
 
 
-scoreNumber.innerText = "0";
+scoreNumber.innerText="0";
 
 
 
-scoreAnimation =
-setInterval(()=>{
+scoreTimer=setInterval(()=>{
 
 
 current++;
 
 
-scoreNumber.innerText =
-current;
+scoreNumber.innerText=current;
 
 
 
-if(current >= target){
+if(current>=target){
 
-clearInterval(scoreAnimation);
+clearInterval(scoreTimer);
 
 }
 
@@ -69,97 +60,59 @@ clearInterval(scoreAnimation);
 },20);
 
 
-
 }
 
 
 
 
-// =====================
-// Circle Update
-// =====================
-
 
 function updateCircle(score){
 
 
-score =
+score=
 Math.max(0,Math.min(100,score));
 
 
-
-scoreCircle.style.background =
+scoreCircle.style.background=
 
 `conic-gradient(
 #00bfff ${score}%,
 #222 ${score}%
 )`;
 
+
 }
 
 
 
 
 
-// =====================
-// Scanner Animation
-// =====================
+
 
 
 function runScanSteps(){
 
 
-const steps=[
-
+[
 "step1",
 "step2",
 "step3",
 "step4"
 
-];
-
-
-
-steps.forEach((step,index)=>{
+].forEach((step,index)=>{
 
 
 setTimeout(()=>{
 
 
-const element =
-document.getElementById(step);
-
-
-
-element.classList.add("active");
-
-
-
-if(index>0){
-
-
-const previous =
-document.getElementById(
-steps[index-1]
-);
-
-
-
-previous.classList.remove(
-"active"
-);
-
-
-previous.classList.add(
-"done"
-);
-
-
-}
+document
+.getElementById(step)
+.classList.add("active");
 
 
 
 },index*700);
+
 
 
 });
@@ -172,11 +125,6 @@ previous.classList.add(
 
 
 
-
-
-// =====================
-// API SCAN
-// =====================
 
 
 async function fetchReport(url){
@@ -205,19 +153,14 @@ await response.json();
 
 
 
-// Website invalid
-
-
-if(data.found === false){
+if(data.found===false){
 
 
 alert(
 "❌ "
 +
-(data.error ||
-"Website not found")
+data.error
 );
-
 
 
 results.classList.add("hidden");
@@ -233,30 +176,21 @@ return;
 
 
 
-// SCORE
-
-
-animateScore(
-data.score
-||
-data.privacy_score
-);
+let score =
+data.score ||
+data.privacy_score ||
+0;
 
 
 
-updateCircle(
-data.score
-||
-data.privacy_score
-);
+animateScore(score);
+
+updateCircle(score);
 
 
 
 
 
-
-
-// HTTPS
 
 
 document.getElementById(
@@ -267,7 +201,6 @@ document.getElementById(
 data.https
 
 ?
-
 "HTTPS connection detected"
 
 :
@@ -280,14 +213,9 @@ data.https
 
 
 
-
-// TRACKERS
-
-
 document.getElementById(
 "trackerResult"
 ).innerText =
-
 
 (data.trackers || 0)
 +
@@ -300,13 +228,9 @@ document.getElementById(
 
 
 
-// COOKIES
-
-
 document.getElementById(
 "cookieResult"
 ).innerText =
-
 
 (data.cookies || 0)
 +
@@ -320,17 +244,11 @@ document.getElementById(
 
 
 
-// RISK
-
-
 document.getElementById(
 "riskResult"
 ).innerText =
 
-
-data.risk
-||
-"Unknown";
+data.risk;
 
 
 
@@ -338,9 +256,6 @@ data.risk
 
 
 
-
-
-// TECHNOLOGY
 
 
 const tech =
@@ -350,32 +265,26 @@ document.getElementById(
 
 
 
-if(data.technologies &&
-data.technologies.length){
-
-
 tech.innerText =
-data.technologies.join(", ");
 
 
-}
+data.technologies &&
+data.technologies.length
 
-else{
+?
 
+data.technologies.join(", ")
 
-tech.innerText =
+:
+
 "No technologies detected";
 
-}
 
 
 
 
 
 
-
-
-// EXPOSED FILES
 
 
 const exposed =
@@ -385,12 +294,98 @@ document.getElementById(
 
 
 
-if(data.exposed_files &&
-data.exposed_files.length){
-
-
 exposed.innerText =
-data.exposed_files.join(", ");
+
+
+data.exposed_files &&
+data.exposed_files.length
+
+?
+
+data.exposed_files.join(", ")
+
+:
+
+"No exposed files";
+
+
+
+
+
+
+
+
+
+
+const securityTXT =
+document.getElementById(
+"securityTxtResult"
+);
+
+
+
+if(securityTXT){
+
+
+securityTXT.innerText =
+
+data.security_txt
+
+?
+
+"Security contact found"
+
+:
+
+"No security.txt found";
+
+
+}
+
+
+
+
+
+
+
+
+
+const vulnerability =
+document.getElementById(
+"vulnerabilityResult"
+);
+
+
+
+if(vulnerability){
+
+
+
+if(
+data.vulnerabilities &&
+data.vulnerabilities.length
+){
+
+
+
+vulnerability.innerHTML =
+
+data.vulnerabilities
+
+.map(v=>
+
+"⚠ "
++
+v.severity
++
+" - "
++
+v.title
+
+)
+
+.join("<br>");
+
 
 
 }
@@ -398,8 +393,11 @@ data.exposed_files.join(", ");
 else{
 
 
-exposed.innerText =
-"No exposed files found";
+vulnerability.innerText =
+"No vulnerabilities detected";
+
+}
+
 
 }
 
@@ -409,8 +407,6 @@ exposed.innerText =
 
 
 
-
-// ISSUES
 
 
 const issues =
@@ -420,22 +416,20 @@ document.getElementById(
 
 
 
-if(data.issues &&
-data.issues.length){
+if(data.issues && data.issues.length){
 
 
 
 issues.innerHTML =
-data.issues.map(issue=>{
 
+data.issues.map(issue=>
 
-return (
 
 "⚠ <b>"
 +
 issue.severity
 +
-"</b> - "
+"</b> "
 +
 issue.title
 +
@@ -443,10 +437,8 @@ issue.title
 +
 issue.description
 
-);
 
-
-}).join("<br><br>");
+).join("<br><br>");
 
 
 
@@ -469,23 +461,23 @@ issues.innerText =
 
 
 
-
-// RECOMMENDATIONS
-
-
-const recommendation =
+const recommendations =
 document.getElementById(
 "recommendationList"
 );
 
 
 
-recommendation.innerHTML="";
+recommendations.innerHTML="";
 
 
 
-if(data.recommendations &&
-data.recommendations.length){
+
+
+if(
+data.recommendations &&
+data.recommendations.length
+){
 
 
 
@@ -496,11 +488,10 @@ let li =
 document.createElement("li");
 
 
-li.innerText =
-item;
+li.innerText=item;
 
 
-recommendation.appendChild(li);
+recommendations.appendChild(li);
 
 
 });
@@ -511,17 +502,16 @@ recommendation.appendChild(li);
 else{
 
 
-recommendation.innerHTML =
-"<li>Security configuration looks good</li>";
+recommendations.innerHTML=
+
+"<li>No recommendations</li>";
 
 }
 
 
 
-
-
-
 }
+
 
 
 
@@ -532,7 +522,7 @@ console.log(error);
 
 
 alert(
-"Unable to connect to Spectra Guard API"
+"API connection failed"
 );
 
 
@@ -540,8 +530,6 @@ alert(
 
 
 
-
-
 }
 
 
@@ -551,16 +539,9 @@ alert(
 
 
 
-
-// =====================
-// BUTTON
-// =====================
-
-
 analyzeBtn.addEventListener(
 "click",
 ()=>{
-
 
 
 const url =
@@ -568,12 +549,11 @@ urlInput.value.trim();
 
 
 
-
 if(!url){
 
 
 alert(
-"Please enter a website URL"
+"Enter a website URL"
 );
 
 
@@ -584,8 +564,7 @@ return;
 
 
 
-
-analyzeBtn.innerText =
+analyzeBtn.innerText=
 "Scanning...";
 
 
@@ -593,17 +572,10 @@ analyzeBtn.disabled=true;
 
 
 
+results.classList.add("hidden");
 
 
-results.classList.add(
-"hidden"
-);
-
-
-
-scannerAnimation.classList.remove(
-"hidden"
-);
+scannerAnimation.classList.remove("hidden");
 
 
 
@@ -616,15 +588,10 @@ runScanSteps();
 setTimeout(async()=>{
 
 
-scannerAnimation.classList.add(
-"hidden"
-);
+scannerAnimation.classList.add("hidden");
 
 
-
-results.classList.remove(
-"hidden"
-);
+results.classList.remove("hidden");
 
 
 
@@ -632,9 +599,7 @@ await fetchReport(url);
 
 
 
-
-
-analyzeBtn.innerText =
+analyzeBtn.innerText=
 "Analyze";
 
 
@@ -643,7 +608,6 @@ analyzeBtn.disabled=false;
 
 
 },3000);
-
 
 
 
