@@ -8,17 +8,10 @@
 
 <title>Spectra Guard</title>
 
-
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-
-<link href="https://fonts.googleapis.com/css2?family=Audiowide&family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
-
-
 <link rel="stylesheet" href="assets/css/variables.css">
 <link rel="stylesheet" href="assets/css/style.css">
-<link rel="stylesheet" href="assets/css/animations.css">
 
+<link href="https://fonts.googleapis.com/css2?family=Audiowide&family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
 
 </head>
 
@@ -28,11 +21,31 @@
 
 <header>
 
+
 <div class="logo">
 SPECTRA GUARD
 </div>
 
+
+
+<nav>
+
+<a href="dashboard.html">
+Dashboard
+</a>
+
+
+<button>
+Login
+</button>
+
+
+</nav>
+
+
 </header>
+
+
 
 
 
@@ -41,18 +54,21 @@ SPECTRA GUARD
 <main>
 
 
+
 <section class="hero">
 
 
-
 <h1>
-Know what websites may learn about you.
+Security Intelligence For The Modern Web
 </h1>
 
 
 
 <p>
-Analyze website security, privacy signals, trackers, cookies and security configuration.
+
+Analyze websites, discover security weaknesses,
+track privacy signals and generate professional reports.
+
 </p>
 
 
@@ -69,17 +85,17 @@ id="urlInput"
 
 type="url"
 
-placeholder="https://example.com"
+placeholder="Enter website URL"
 
 >
 
 
-
 <button id="analyzeBtn">
 
-Analyze
+Scan Website
 
 </button>
+
 
 
 </div>
@@ -95,48 +111,35 @@ Analyze
 <div id="scannerAnimation" class="scanner-animation hidden">
 
 
-
-<div class="scanner-line"></div>
-
-
-
 <p>
-Analyzing website security...
+Scanning website...
 </p>
-
-
-
 
 
 <div class="scan-steps">
 
 
 <div id="step1">
-◯ Checking HTTPS
+Checking connection
 </div>
-
 
 
 <div id="step2">
-◯ Detecting technologies
+Analyzing security
 </div>
-
 
 
 <div id="step3">
-◯ Checking security signals
+Detecting technologies
 </div>
-
 
 
 <div id="step4">
-◯ Generating report
+Generating report
 </div>
 
 
-
 </div>
-
 
 
 </div>
@@ -153,11 +156,6 @@ Analyzing website security...
 
 
 
-
-
-
-
-
 <div class="score-card">
 
 
@@ -167,35 +165,27 @@ Security Score
 
 
 
-
 <div class="score-circle">
 
 
 <div class="score">
 
-
 <span id="scoreNumber">
 0
 </span>
-
 
 <small>
 /100
 </small>
 
 
-
 </div>
 
 
 </div>
 
 
-
 </div>
-
-
-
 
 
 
@@ -206,236 +196,96 @@ Security Score
 
 
 
-
-
-
-
-
-<div class="info-card safe">
-
-
-<div class="status">
-🟢 Status
-</div>
-
+<div class="info-card">
 
 <h3>
 HTTPS
 </h3>
 
-
 <p id="httpsResult">
 Checking...
 </p>
 
-
 </div>
-
-
-
-
-
-
-
-
-
-<div class="info-card warning">
-
-
-<div class="status">
-🟡 Status
-</div>
-
-
-<h3>
-Trackers
-</h3>
-
-
-<p id="trackerResult">
-Checking...
-</p>
-
-
-</div>
-
-
-
-
-
-
-
-
-
-<div class="info-card warning">
-
-
-<div class="status">
-🟡 Status
-</div>
-
-
-<h3>
-Cookies
-</h3>
-
-
-<p id="cookieResult">
-Checking...
-</p>
-
-
-</div>
-
-
-
-
-
 
 
 
 
 <div class="info-card">
 
-
-<div class="status">
-⚠ Risk
-</div>
-
-
 <h3>
-Risk Level
+Risk
 </h3>
-
 
 <p id="riskResult">
 Checking...
 </p>
 
-
 </div>
-
-
-
-
-
 
 
 
 
 <div class="info-card">
 
+<h3>
+Trackers
+</h3>
 
-<div class="status">
-💻 Technology
+<p id="trackerResult">
+Checking...
+</p>
+
 </div>
 
 
+
+
+<div class="info-card">
+
 <h3>
-Detected Technologies
+Cookies
 </h3>
 
+<p id="cookieResult">
+Checking...
+</p>
+
+</div>
+
+
+
+
+<div class="info-card">
+
+<h3>
+Technologies
+</h3>
 
 <p id="technologyResult">
 Checking...
 </p>
 
-
 </div>
-
-
-
-
-
 
 
 
 
 <div class="info-card">
 
-
-<div class="status">
-📂 Exposure
-</div>
-
-
 <h3>
-Exposed Files
+Exposure
 </h3>
-
 
 <p id="exposedResult">
 Checking...
 </p>
 
-
 </div>
 
 
 
-
-
-
-
-
-
-<div class="info-card">
-
-
-<div class="status">
-🛡 Security TXT
 </div>
-
-
-<h3>
-Security Contact
-</h3>
-
-
-<p id="securityTxtResult">
-Checking...
-</p>
-
-
-</div>
-
-
-
-
-
-
-
-
-
-<div class="info-card warning">
-
-
-<div class="status">
-🚨 Vulnerabilities
-</div>
-
-
-<h3>
-Detected Risks
-</h3>
-
-
-<p id="vulnerabilityResult">
-Checking...
-</p>
-
-
-</div>
-
-
-
-
-
-
-
-
-</div>
-
 
 
 
@@ -447,24 +297,9 @@ Checking...
 <div class="report-summary">
 
 
-
 <h2>
-Security Analysis
+Analysis Report
 </h2>
-
-
-
-
-
-
-
-
-<div class="report-item">
-
-
-<span>
-Detected Issues
-</span>
 
 
 <p id="issuesResult">
@@ -472,52 +307,17 @@ Scanning...
 </p>
 
 
-</div>
-
-
-
-
-
-
-
-
-
-<div class="recommendations">
-
-
-<h3>
-Recommendations
-</h3>
-
-
-
 
 <ul id="recommendationList">
 
-
 <li>
-Waiting for scan...
+Waiting...
 </li>
-
 
 </ul>
 
 
-
 </div>
-
-
-
-
-
-
-
-
-</div>
-
-
-
-
 
 
 
@@ -529,7 +329,65 @@ Waiting for scan...
 
 
 
+
+<section class="features">
+
+
+
+<div>
+
+<h3>
+Website Intelligence
+</h3>
+
+<p>
+Detect technologies, headers and privacy signals.
+</p>
+
+</div>
+
+
+
+
+<div>
+
+<h3>
+Security Reports
+</h3>
+
+<p>
+Generate detailed security analysis.
+</p>
+
+</div>
+
+
+
+
+<div>
+
+<h3>
+Monitoring
+</h3>
+
+<p>
+Track website security changes over time.
+</p>
+
+</div>
+
+
+
 </section>
+
+
+
+
+
+
+
+</section>
+
 
 
 </main>
@@ -540,13 +398,7 @@ Waiting for scan...
 
 
 
-
-<script src="assets/js/scanner.js"></script>
-
-<script src="assets/js/ui.js"></script>
-
 <script src="assets/js/app.js"></script>
-
 
 
 </body>
