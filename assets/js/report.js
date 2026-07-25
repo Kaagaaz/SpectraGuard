@@ -1,61 +1,12 @@
 // ======================================
-// Spectra Guard Report Controller
+// Spectra Guard Report Renderer v4
 // ======================================
 
 
-const API_URL =
-"https://spectra-guard-api.kaagaazcoder-safe.workers.dev";
 
-
-
-
-
-const params = new URLSearchParams(
-    window.location.search
-);
-
-
-
-const websiteURL =
-params.get("url");
-
-
-
-
-
-
-
-async function loadReport(){
-
-
-
-if(!websiteURL){
-
-
-document.getElementById("websiteName").innerText =
-"No website provided";
-
-
-return;
-
-
-}
-
-
-
-
-
-
-try{
-
-
-
-const response = await fetch(
-
-API_URL +
-"/scan?url=" +
-encodeURIComponent(websiteURL)
-
+const result = 
+JSON.parse(
+    localStorage.getItem("scanResult")
 );
 
 
@@ -63,22 +14,16 @@ encodeURIComponent(websiteURL)
 
 
 
-const data = await response.json();
-
-
-
-
-
-
-
-if(!data.found){
+if(!result){
 
 
 document.getElementById("websiteName").innerText =
-"Website not found";
+"No scan data found";
 
 
-return;
+throw new Error(
+"No scan result"
+);
 
 
 }
@@ -89,10 +34,15 @@ return;
 
 
 
-// Website name
+
+
+// Website
 
 document.getElementById("websiteName").innerText =
-data.website;
+
+result.website;
+
+
 
 
 
@@ -102,7 +52,10 @@ data.website;
 // Score
 
 document.getElementById("score").innerText =
-data.score;
+
+result.score;
+
+
 
 
 
@@ -111,8 +64,15 @@ data.score;
 
 // Risk
 
-document.getElementById("risk").innerText =
-"Risk Level: " + data.risk;
+const risk =
+document.getElementById("risk");
+
+
+
+risk.innerText =
+
+"Risk Level: " + result.risk;
+
 
 
 
@@ -125,11 +85,14 @@ document.getElementById("risk").innerText =
 
 document.getElementById("https").innerText =
 
-data.https
+result.https
 
-? "✓ HTTPS enabled"
+?
+"✓ HTTPS enabled"
 
-: "✗ HTTPS not detected";
+:
+"✗ HTTPS not detected";
+
 
 
 
@@ -142,7 +105,7 @@ data.https
 
 document.getElementById("cookies").innerText =
 
-data.cookies +
+result.cookies +
 " cookies detected";
 
 
@@ -156,8 +119,86 @@ data.cookies +
 
 document.getElementById("trackers").innerText =
 
-data.trackers +
+result.trackers +
 " trackers detected";
+
+
+
+
+
+
+
+
+
+// Issues
+
+const issuesBox =
+document.getElementById("issues");
+
+
+
+issuesBox.innerHTML = "";
+
+
+
+
+
+
+if(
+result.issues &&
+result.issues.length > 0
+){
+
+
+
+result.issues.forEach(issue=>{
+
+
+const div =
+document.createElement("p");
+
+
+if(typeof issue === "object"){
+
+
+div.innerHTML =
+
+"⚠ " +
+issue.title +
+"<br><small>" +
+issue.description +
+"</small>";
+
+
+}
+else{
+
+
+div.innerText =
+"⚠ " + issue;
+
+
+}
+
+
+
+issuesBox.appendChild(div);
+
+
+
+});
+
+
+}
+
+else{
+
+
+issuesBox.innerHTML =
+"✓ No issues detected";
+
+
+}
 
 
 
@@ -182,20 +223,25 @@ vulnBox.innerHTML = "";
 
 
 if(
-data.vulnerabilities &&
-data.vulnerabilities.length > 0
+result.vulnerabilities &&
+result.vulnerabilities.length > 0
 ){
 
 
 
-data.vulnerabilities.forEach(v=>{
+result.vulnerabilities.forEach(v=>{
 
 
-const item =
+const div =
 document.createElement("p");
 
 
-item.innerHTML =
+
+if(typeof v === "object"){
+
+
+div.innerHTML =
+
 "⚠ " +
 v.title +
 " (" +
@@ -203,12 +249,23 @@ v.severity +
 ")";
 
 
-vulnBox.appendChild(item);
+}
+else{
+
+
+div.innerText =
+"⚠ " + v;
+
+
+}
+
+
+
+vulnBox.appendChild(div);
 
 
 
 });
-
 
 
 }
@@ -217,6 +274,7 @@ else{
 
 
 vulnBox.innerHTML =
+
 "✓ No vulnerabilities detected";
 
 
@@ -233,33 +291,38 @@ vulnBox.innerHTML =
 // Recommendations
 
 
-const list =
+const recommendationList =
+
 document.getElementById("recommendations");
 
 
-list.innerHTML = "";
+
+recommendationList.innerHTML = "";
+
 
 
 
 
 
 if(
-data.recommendations
+result.recommendations &&
+result.recommendations.length > 0
 ){
 
 
 
-data.recommendations.forEach(r=>{
+result.recommendations.forEach(item=>{
 
 
 const li =
 document.createElement("li");
 
 
-li.innerText = r;
+li.innerText = item;
 
 
-list.appendChild(li);
+recommendationList.appendChild(li);
+
 
 
 });
@@ -267,33 +330,12 @@ list.appendChild(li);
 
 }
 
+else{
 
 
+recommendationList.innerHTML =
 
-
-}
-
-
-catch(error){
-
-
-
-console.error(error);
-
-
-document.getElementById("websiteName").innerText =
-"Unable to connect to API";
+"<li>No recommendations</li>";
 
 
 }
-
-
-
-}
-
-
-
-
-
-
-loadReport();
