@@ -8,13 +8,9 @@
 
 <title>Spectra Guard Report</title>
 
-
 <link rel="stylesheet" href="assets/css/variables.css">
 <link rel="stylesheet" href="assets/css/style.css">
-
-
-<link href="https://fonts.googleapis.com/css2?family=Audiowide&family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
-
+<link rel="stylesheet" href="assets/css/animations.css">
 
 </head>
 
@@ -24,41 +20,16 @@
 
 <header>
 
-
 <div class="logo">
 SPECTRA GUARD
 </div>
-
-
-<nav>
-
-
-<a href="index.html">
-Scanner
-</a>
-
-
-</nav>
-
 
 </header>
 
 
 
 
-
-
-
-
 <main class="report-page">
-
-
-
-
-
-
-
-<section class="dashboard-hero">
 
 
 <h1>
@@ -67,79 +38,41 @@ Security Report
 
 
 <p id="websiteName">
-Analyzing website...
+Scanning website...
 </p>
 
 
 
-<button class="report-button">
-
-Export Report
-
-</button>
 
 
-
-</section>
-
+<section class="score-card">
 
 
-
-
-
-
-
-
-<section class="report-score">
-
+<h2>
+Security Score
+</h2>
 
 
 <div class="score-circle">
 
-
-<div class="score">
-
-
-<span id="reportScore">
+<span id="score">
 0
 </span>
-
 
 <small>
 /100
 </small>
 
-
-</div>
-
-
 </div>
 
 
 
-
-
-
-<div class="risk-box">
-
-
-<h2>
-Risk Level
-</h2>
-
-
-<p id="reportRisk">
-Checking...
-</p>
-
-
-</div>
-
+<h3 id="risk">
+Checking risk...
+</h3>
 
 
 </section>
-
-
 
 
 
@@ -150,23 +83,30 @@ Checking...
 <section class="info-grid">
 
 
+<div class="info-card">
 
+<h3>
+HTTPS
+</h3>
+
+<p id="https">
+Checking...
+</p>
+
+</div>
 
 
 
 
 <div class="info-card">
 
-
 <h3>
-🔒 HTTPS
+Cookies
 </h3>
 
-
-<p id="reportHTTPS">
+<p id="cookies">
 Checking...
 </p>
-
 
 </div>
 
@@ -174,94 +114,15 @@ Checking...
 
 
 
-
-
 <div class="info-card">
 
-
 <h3>
-🍪 Cookies
+Trackers
 </h3>
 
-
-<p id="reportCookies">
+<p id="trackers">
 Checking...
 </p>
-
-
-</div>
-
-
-
-
-
-
-
-<div class="info-card">
-
-
-<h3>
-📡 Trackers
-</h3>
-
-
-<p id="reportTrackers">
-Checking...
-</p>
-
-
-</div>
-
-
-
-
-
-
-
-<div class="info-card">
-
-
-<h3>
-💻 Technologies
-</h3>
-
-
-<p id="reportTechnology">
-Checking...
-</p>
-
-
-</div>
-
-
-
-
-
-</section>
-
-
-
-
-
-
-
-
-
-<section class="report-summary">
-
-
-<h2>
-🚨 Vulnerabilities
-</h2>
-
-
-<div id="vulnerabilityBox">
-
-
-<p>
-No vulnerabilities found.
-</p>
-
 
 </div>
 
@@ -281,49 +142,30 @@ No vulnerabilities found.
 
 
 <h2>
-⚠ Security Issues
+Vulnerabilities
 </h2>
 
 
+<div id="vulnerabilities">
 
-<div id="issueBox">
-
-
-<p>
-No issues detected.
-</p>
-
+Scanning...
 
 </div>
 
 
 
-</section>
-
-
-
-
-
-
-
-
-
-<section class="report-summary">
 
 
 <h2>
-✅ Recommendations
+Recommendations
 </h2>
 
 
-
-<ul id="reportRecommendations">
-
+<ul id="recommendations">
 
 <li>
-No recommendations available.
+Loading...
 </li>
-
 
 </ul>
 
@@ -335,12 +177,7 @@ No recommendations available.
 
 
 
-
-
 </main>
-
-
-
 
 
 
