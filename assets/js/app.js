@@ -1,142 +1,39 @@
-// =====================================
-// Spectra Guard v4 - Main Scanner
-// =====================================
+// ======================================
+// Spectra Guard Frontend Controller v4
+// ======================================
 
 
-const analyzeBtn =
-document.getElementById("analyzeBtn");
+const analyzeBtn = document.getElementById("analyzeBtn");
 
+const urlInput = document.getElementById("urlInput");
+
+const scannerAnimation =
+document.getElementById("scannerAnimation");
 
 const results =
 document.getElementById("results");
 
 
-const scannerAnimation =
-document.getElementById("scannerAnimation");
 
 
-const scoreNumber =
-document.getElementById("scoreNumber");
 
+const API_URL =
+"https://spectra-guard-api.kaagaazcoder-safe.workers.dev";
 
-const scoreCircle =
-document.querySelector(".score-circle");
 
 
-const urlInput =
-document.getElementById("urlInput");
 
 
 
-let scoreInterval;
 
 
 
-
-
-// =====================================
-// Score Animation
-// =====================================
-
-
-function animateScore(target){
-
-
-clearInterval(scoreInterval);
-
-
-target =
-Math.max(
-0,
-Math.min(100,Number(target))
-);
-
-
-
-let current = 0;
-
-
-scoreNumber.innerText = "0";
-
-
-
-scoreInterval =
-setInterval(()=>{
-
-
-current++;
-
-
-scoreNumber.innerText =
-current;
-
-
-
-if(current >= target){
-
-
-clearInterval(scoreInterval);
-
-
-}
-
-
-},20);
-
-
-
-}
-
-
-
-
-
-
-
-
-// =====================================
-// Circle Animation
-// =====================================
-
-
-function updateCircle(score){
-
-
-score =
-Math.max(
-0,
-Math.min(100,score)
-);
-
-
-
-scoreCircle.style.background =
-
-`conic-gradient(
-#00bfff ${score}%,
-#222 ${score}%
-)`;
-
-
-
-}
-
-
-
-
-
-
-
-
-// =====================================
-// Scanner Steps
-// =====================================
-
+// Scanner animation steps
 
 function runScanSteps(){
 
 
-const steps=[
+const steps = [
 
 "step1",
 "step2",
@@ -153,20 +50,32 @@ steps.forEach((step,index)=>{
 setTimeout(()=>{
 
 
-const element =
+const current =
 document.getElementById(step);
 
 
 
-if(element){
+if(index > 0){
 
-element.classList.add("active");
+
+document
+.getElementById(steps[index-1])
+.classList.remove("active");
+
+document
+.getElementById(steps[index-1])
+.classList.add("done");
+
 
 }
 
 
 
-},index*700);
+current.classList.add("active");
+
+
+
+}, index * 700);
 
 
 
@@ -183,129 +92,9 @@ element.classList.add("active");
 
 
 
-// =====================================
-// Save Scan
-// =====================================
+// Main API request
 
-
-function saveScan(data,url){
-
-
-
-let scans =
-
-JSON.parse(
-localStorage.getItem("spectraScans")
-)
-||
-[];
-
-
-
-
-
-const scan = {
-
-
-website:
-data.website || url,
-
-
-score:
-data.score ||
-data.privacy_score ||
-0,
-
-
-risk:
-data.risk ||
-"Unknown",
-
-
-
-https:
-data.https || false,
-
-
-cookies:
-data.cookies || 0,
-
-
-trackers:
-data.trackers || 0,
-
-
-technologies:
-data.technologies || [],
-
-
-vulnerabilities:
-data.vulnerabilities || [],
-
-
-issues:
-data.issues || [],
-
-
-recommendations:
-data.recommendations || [],
-
-
-date:
-new Date()
-.toLocaleDateString()
-
-
-
-};
-
-
-
-
-
-
-// Remove duplicate same website
-
-
-scans =
-scans.filter(item=>
-item.website !== scan.website
-);
-
-
-
-scans.push(scan);
-
-
-
-
-
-localStorage.setItem(
-
-"spectraScans",
-
-JSON.stringify(scans)
-
-);
-
-
-
-}
-
-
-
-
-
-
-
-
-
-// =====================================
-// Fetch API Report
-// =====================================
-
-
-async function fetchReport(url){
+async function scanWebsite(url){
 
 
 
@@ -313,16 +102,13 @@ try{
 
 
 
-const response =
+const response = await fetch(
 
-await fetch(
-
-"https://spectra-guard-api.kaagaazcoder-safe.workers.dev/scan?url="
-+
+API_URL +
+"/scan?url=" +
 encodeURIComponent(url)
 
 );
-
 
 
 
@@ -336,13 +122,12 @@ await response.json();
 
 
 
-if(data.found === false){
+
+if(!data.found){
 
 
 alert(
-"❌ "
-+
-data.error
+"Website not found"
 );
 
 
@@ -356,332 +141,25 @@ return;
 
 
 
+// Save report
 
-// Score
+localStorage.setItem(
 
+"scanResult",
 
-const score =
+JSON.stringify(data)
 
-data.score ||
-data.privacy_score ||
-0;
-
-
-
-animateScore(score);
-
-
-updateCircle(score);
-
-
-
-
-
-
-
-
-
-
-// HTTPS
-
-
-document.getElementById(
-"httpsResult"
-).innerText =
-
-
-data.https
-
-?
-
-"HTTPS Enabled"
-
-:
-
-"HTTPS Missing";
-
-
-
-
-
-
-
-
-
-// Risk
-
-
-document.getElementById(
-"riskResult"
-).innerText =
-
-
-data.risk;
-
-
-
-
-
-
-
-
-
-// Trackers
-
-
-document.getElementById(
-"trackerResult"
-).innerText =
-
-
-(data.trackers || 0)
-+
-" trackers";
-
-
-
-
-
-
-
-
-
-// Cookies
-
-
-document.getElementById(
-"cookieResult"
-).innerText =
-
-
-(data.cookies || 0)
-+
-" cookies";
-
-
-
-
-
-
-
-
-
-// Technology
-
-
-const tech =
-document.getElementById(
-"technologyResult"
 );
 
 
 
-if(tech){
 
 
-tech.innerText =
 
+// Open report page
 
-data.technologies &&
-data.technologies.length
-
-?
-
-data.technologies.join(", ")
-
-:
-
-"No technologies detected";
-
-
-}
-
-
-
-
-
-
-
-
-
-// Exposure
-
-
-const exposure =
-document.getElementById(
-"exposedResult"
-);
-
-
-
-if(exposure){
-
-
-exposure.innerText =
-
-
-data.exposed_files &&
-data.exposed_files.length
-
-?
-
-data.exposed_files.join(", ")
-
-:
-
-"No exposed files";
-
-
-}
-
-
-
-
-
-
-
-
-
-
-// Issues
-
-
-const issues =
-document.getElementById(
-"issuesResult"
-);
-
-
-
-if(issues){
-
-
-
-if(data.issues &&
-data.issues.length){
-
-
-
-issues.innerHTML =
-
-
-data.issues.map(issue=>{
-
-
-return `
-
-<p>
-
-⚠ <b>
-${issue.severity}
-</b>
-
-<br>
-
-${issue.title}
-
-<br>
-
-${issue.description}
-
-</p>
-
-`;
-
-
-}).join("");
-
-
-
-}
-
-else{
-
-
-issues.innerHTML =
-"No issues detected";
-
-}
-
-
-}
-
-
-
-
-
-
-
-
-
-// Recommendations
-
-
-const recommendationList =
-
-document.getElementById(
-"recommendationList"
-);
-
-
-
-if(recommendationList){
-
-
-recommendationList.innerHTML="";
-
-
-
-if(
-data.recommendations &&
-data.recommendations.length
-){
-
-
-
-data.recommendations.forEach(item=>{
-
-
-let li =
-document.createElement("li");
-
-
-li.innerText=item;
-
-
-recommendationList.appendChild(li);
-
-
-
-});
-
-
-}
-
-else{
-
-
-recommendationList.innerHTML =
-
-"<li>No recommendations</li>";
-
-
-}
-
-
-}
-
-
-
-
-
-
-
-
-// Save for dashboard/report
-
-
-saveScan(data,url);
+window.location.href =
+"report.html";
 
 
 
@@ -693,12 +171,14 @@ saveScan(data,url);
 catch(error){
 
 
-console.log(error);
 
+console.error(error);
 
 
 alert(
+
 "Unable to connect to Spectra Guard API"
+
 );
 
 
@@ -717,31 +197,29 @@ alert(
 
 
 
-// =====================================
-// Scan Button
-// =====================================
+// Analyze button
+
+
+if(analyzeBtn){
 
 
 analyzeBtn.addEventListener(
-
 "click",
-
 ()=>{
 
 
-
-const url =
+const website =
 urlInput.value.trim();
 
 
 
 
 
-if(!url){
+if(!website){
 
 
 alert(
-"Please enter a website"
+"Please enter a website URL"
 );
 
 
@@ -754,28 +232,58 @@ return;
 
 
 
+
+
+let formattedURL =
+website;
+
+
+
+
+
+
+// Add https automatically
+
+if(
+!formattedURL.startsWith("http://")
+&&
+!formattedURL.startsWith("https://")
+){
+
+
+formattedURL =
+"https://" + formattedURL;
+
+
+}
+
+
+
+
+
+
+
+
 analyzeBtn.innerText =
 "Scanning...";
 
 
-
-analyzeBtn.disabled=true;
-
-
+analyzeBtn.disabled =
+true;
 
 
 
-results.classList.add(
-"hidden"
-);
 
 
+
+
+if(scannerAnimation){
 
 scannerAnimation.classList.remove(
 "hidden"
 );
 
-
+}
 
 
 
@@ -786,34 +294,11 @@ runScanSteps();
 
 
 
-setTimeout(async()=>{
+
+setTimeout(()=>{
 
 
-scannerAnimation.classList.add(
-"hidden"
-);
-
-
-
-results.classList.remove(
-"hidden"
-);
-
-
-
-await fetchReport(url);
-
-
-
-
-
-analyzeBtn.innerText =
-"Scan Website";
-
-
-
-analyzeBtn.disabled=false;
-
+scanWebsite(formattedURL);
 
 
 
@@ -823,3 +308,6 @@ analyzeBtn.disabled=false;
 
 
 });
+
+
+}
