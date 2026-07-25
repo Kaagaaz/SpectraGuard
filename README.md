@@ -116,3 +116,149 @@ The score is calculated using multiple security factors.
 
 
 ---
+
+
+
+---
+
+# 🔧 How It Works
+
+
+1. User enters a website URL.
+
+2. The frontend sends the URL to the Spectra Guard API.
+
+3. The API fetches publicly available website information.
+
+4. The scanner analyzes:
+
+   - HTTPS
+   - Headers
+   - Cookies
+   - Trackers
+   - Technologies
+
+5. A security score is generated.
+
+6. Results are displayed instantly.
+
+
+---
+
+# 🛠️ Tech Stack
+
+
+## Frontend
+
+- HTML5
+- CSS3
+- JavaScript
+- GitHub Pages
+
+
+## Backend
+
+- Cloudflare Workers
+- JavaScript
+
+
+## Tools Used
+
+- Git
+- GitHub
+- Cloudflare
+
+
+---
+
+# 📁 Repository Structure
+
+│ ├── index.html │ ├── assets │   │ │   ├── css │   │   ├── style.css │   │   ├── variables.css │   │   └── animations.css │   │ │   └── js │       └── app.js │ └── README.md
+
+
+
+
+---
+
+# 🚀 Deployment
+
+
+## Frontend
+
+Hosted using:
+
+GitHub Pages
+
+
+## Backend
+
+Hosted using:
+
+Cloudflare Workers
+
+
+
+---
+
+# 🔐 Security Notice
+
+Spectra Guard performs **passive security analysis**.
+
+It does NOT:
+
+- Exploit websites
+- Perform unauthorized penetration testing
+- Attempt attacks
+- Access private information
+
+
+Only publicly available information is analyzed.
+
+
+Always get permission before performing security testing on websites you do not own.
+
+
+---
+
+# 🛣️ Future Roadmap
+
+
+## Version 5.2
+
+Planned:
+
+- SSL certificate information
+- Better domain information
+- Improved scoring
+
+
+## Version 5.3
+
+Planned:
+
+- Scan history
+- Export reports
+- More technology detection
+
+
+## Version 6.0
+
+Planned:
+
+- Advanced security reports
+- Better visualization
+- More detailed analysis
+
+
+---
+
+# 🤝 Contributing
+
+
+Contributions are welcome.
+
+Steps:
+
+1. Fork this repository
+
+2. Create a new branch
