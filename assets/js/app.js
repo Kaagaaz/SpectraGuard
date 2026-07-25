@@ -1,58 +1,82 @@
+// =====================================
+// Spectra Guard v4 - Main Scanner
+// =====================================
+
+
 const analyzeBtn =
 document.getElementById("analyzeBtn");
+
 
 const results =
 document.getElementById("results");
 
+
 const scannerAnimation =
 document.getElementById("scannerAnimation");
+
 
 const scoreNumber =
 document.getElementById("scoreNumber");
 
+
 const scoreCircle =
 document.querySelector(".score-circle");
+
 
 const urlInput =
 document.getElementById("urlInput");
 
 
-let scoreTimer;
+
+let scoreInterval;
 
 
+
+
+
+// =====================================
+// Score Animation
+// =====================================
 
 
 function animateScore(target){
 
 
-clearInterval(scoreTimer);
+clearInterval(scoreInterval);
 
 
 target =
-Math.max(0,Math.min(100,Number(target)));
+Math.max(
+0,
+Math.min(100,Number(target))
+);
 
 
 
-let current=0;
+let current = 0;
 
 
-scoreNumber.innerText="0";
+scoreNumber.innerText = "0";
 
 
 
-scoreTimer=setInterval(()=>{
+scoreInterval =
+setInterval(()=>{
 
 
 current++;
 
 
-scoreNumber.innerText=current;
+scoreNumber.innerText =
+current;
 
 
 
-if(current>=target){
+if(current >= target){
 
-clearInterval(scoreTimer);
+
+clearInterval(scoreInterval);
+
 
 }
 
@@ -60,20 +84,33 @@ clearInterval(scoreTimer);
 },20);
 
 
+
 }
 
 
 
 
 
+
+
+
+// =====================================
+// Circle Animation
+// =====================================
+
+
 function updateCircle(score){
 
 
-score=
-Math.max(0,Math.min(100,score));
+score =
+Math.max(
+0,
+Math.min(100,score)
+);
 
 
-scoreCircle.style.background=
+
+scoreCircle.style.background =
 
 `conic-gradient(
 #00bfff ${score}%,
@@ -81,6 +118,7 @@ scoreCircle.style.background=
 )`;
 
 
+
 }
 
 
@@ -90,24 +128,41 @@ scoreCircle.style.background=
 
 
 
+// =====================================
+// Scanner Steps
+// =====================================
+
+
 function runScanSteps(){
 
 
-[
+const steps=[
+
 "step1",
 "step2",
 "step3",
 "step4"
 
-].forEach((step,index)=>{
+];
+
+
+
+steps.forEach((step,index)=>{
 
 
 setTimeout(()=>{
 
 
-document
-.getElementById(step)
-.classList.add("active");
+const element =
+document.getElementById(step);
+
+
+
+if(element){
+
+element.classList.add("active");
+
+}
 
 
 
@@ -127,6 +182,129 @@ document
 
 
 
+
+// =====================================
+// Save Scan
+// =====================================
+
+
+function saveScan(data,url){
+
+
+
+let scans =
+
+JSON.parse(
+localStorage.getItem("spectraScans")
+)
+||
+[];
+
+
+
+
+
+const scan = {
+
+
+website:
+data.website || url,
+
+
+score:
+data.score ||
+data.privacy_score ||
+0,
+
+
+risk:
+data.risk ||
+"Unknown",
+
+
+
+https:
+data.https || false,
+
+
+cookies:
+data.cookies || 0,
+
+
+trackers:
+data.trackers || 0,
+
+
+technologies:
+data.technologies || [],
+
+
+vulnerabilities:
+data.vulnerabilities || [],
+
+
+issues:
+data.issues || [],
+
+
+recommendations:
+data.recommendations || [],
+
+
+date:
+new Date()
+.toLocaleDateString()
+
+
+
+};
+
+
+
+
+
+
+// Remove duplicate same website
+
+
+scans =
+scans.filter(item=>
+item.website !== scan.website
+);
+
+
+
+scans.push(scan);
+
+
+
+
+
+localStorage.setItem(
+
+"spectraScans",
+
+JSON.stringify(scans)
+
+);
+
+
+
+}
+
+
+
+
+
+
+
+
+
+// =====================================
+// Fetch API Report
+// =====================================
+
+
 async function fetchReport(url){
 
 
@@ -134,7 +312,9 @@ async function fetchReport(url){
 try{
 
 
+
 const response =
+
 await fetch(
 
 "https://spectra-guard-api.kaagaazcoder-safe.workers.dev/scan?url="
@@ -142,6 +322,9 @@ await fetch(
 encodeURIComponent(url)
 
 );
+
+
+
 
 
 
@@ -153,7 +336,7 @@ await response.json();
 
 
 
-if(data.found===false){
+if(data.found === false){
 
 
 alert(
@@ -161,9 +344,6 @@ alert(
 +
 data.error
 );
-
-
-results.classList.add("hidden");
 
 
 return;
@@ -176,7 +356,12 @@ return;
 
 
 
-let score =
+
+// Score
+
+
+const score =
+
 data.score ||
 data.privacy_score ||
 0;
@@ -185,12 +370,19 @@ data.privacy_score ||
 
 animateScore(score);
 
+
 updateCircle(score);
 
 
 
 
 
+
+
+
+
+
+// HTTPS
 
 
 document.getElementById(
@@ -201,25 +393,12 @@ document.getElementById(
 data.https
 
 ?
-"HTTPS connection detected"
+
+"HTTPS Enabled"
 
 :
 
-"HTTPS not detected";
-
-
-
-
-
-
-
-document.getElementById(
-"trackerResult"
-).innerText =
-
-(data.trackers || 0)
-+
-" trackers detected";
+"HTTPS Missing";
 
 
 
@@ -228,25 +407,14 @@ document.getElementById(
 
 
 
-document.getElementById(
-"cookieResult"
-).innerText =
 
-(data.cookies || 0)
-+
-" cookies found";
-
-
-
-
-
-
-
+// Risk
 
 
 document.getElementById(
 "riskResult"
 ).innerText =
+
 
 data.risk;
 
@@ -258,11 +426,57 @@ data.risk;
 
 
 
+// Trackers
+
+
+document.getElementById(
+"trackerResult"
+).innerText =
+
+
+(data.trackers || 0)
++
+" trackers";
+
+
+
+
+
+
+
+
+
+// Cookies
+
+
+document.getElementById(
+"cookieResult"
+).innerText =
+
+
+(data.cookies || 0)
++
+" cookies";
+
+
+
+
+
+
+
+
+
+// Technology
+
+
 const tech =
 document.getElementById(
 "technologyResult"
 );
 
+
+
+if(tech){
 
 
 tech.innerText =
@@ -280,6 +494,7 @@ data.technologies.join(", ")
 "No technologies detected";
 
 
+}
 
 
 
@@ -287,14 +502,22 @@ data.technologies.join(", ")
 
 
 
-const exposed =
+
+
+// Exposure
+
+
+const exposure =
 document.getElementById(
 "exposedResult"
 );
 
 
 
-exposed.innerText =
+if(exposure){
+
+
+exposure.innerText =
 
 
 data.exposed_files &&
@@ -309,37 +532,6 @@ data.exposed_files.join(", ")
 "No exposed files";
 
 
-
-
-
-
-
-
-
-
-const securityTXT =
-document.getElementById(
-"securityTxtResult"
-);
-
-
-
-if(securityTXT){
-
-
-securityTXT.innerText =
-
-data.security_txt
-
-?
-
-"Security contact found"
-
-:
-
-"No security.txt found";
-
-
 }
 
 
@@ -350,63 +542,8 @@ data.security_txt
 
 
 
-const vulnerability =
-document.getElementById(
-"vulnerabilityResult"
-);
 
-
-
-if(vulnerability){
-
-
-
-if(
-data.vulnerabilities &&
-data.vulnerabilities.length
-){
-
-
-
-vulnerability.innerHTML =
-
-data.vulnerabilities
-
-.map(v=>
-
-"⚠ "
-+
-v.severity
-+
-" - "
-+
-v.title
-
-)
-
-.join("<br>");
-
-
-
-}
-
-else{
-
-
-vulnerability.innerText =
-"No vulnerabilities detected";
-
-}
-
-
-}
-
-
-
-
-
-
-
+// Issues
 
 
 const issues =
@@ -416,29 +553,43 @@ document.getElementById(
 
 
 
-if(data.issues && data.issues.length){
+if(issues){
+
+
+
+if(data.issues &&
+data.issues.length){
 
 
 
 issues.innerHTML =
 
-data.issues.map(issue=>
+
+data.issues.map(issue=>{
 
 
-"⚠ <b>"
-+
-issue.severity
-+
-"</b> "
-+
-issue.title
-+
-"<br>"
-+
-issue.description
+return `
+
+<p>
+
+⚠ <b>
+${issue.severity}
+</b>
+
+<br>
+
+${issue.title}
+
+<br>
+
+${issue.description}
+
+</p>
+
+`;
 
 
-).join("<br><br>");
+}).join("");
 
 
 
@@ -447,8 +598,10 @@ issue.description
 else{
 
 
-issues.innerText =
-"No security issues detected";
+issues.innerHTML =
+"No issues detected";
+
+}
 
 
 }
@@ -461,16 +614,21 @@ issues.innerText =
 
 
 
-const recommendations =
+// Recommendations
+
+
+const recommendationList =
+
 document.getElementById(
 "recommendationList"
 );
 
 
 
-recommendations.innerHTML="";
+if(recommendationList){
 
 
+recommendationList.innerHTML="";
 
 
 
@@ -491,7 +649,8 @@ document.createElement("li");
 li.innerText=item;
 
 
-recommendations.appendChild(li);
+recommendationList.appendChild(li);
+
 
 
 });
@@ -502,18 +661,34 @@ recommendations.appendChild(li);
 else{
 
 
-recommendations.innerHTML=
+recommendationList.innerHTML =
 
 "<li>No recommendations</li>";
 
-}
-
-
 
 }
 
 
+}
 
+
+
+
+
+
+
+
+// Save for dashboard/report
+
+
+saveScan(data,url);
+
+
+
+
+
+
+}
 
 catch(error){
 
@@ -521,27 +696,38 @@ catch(error){
 console.log(error);
 
 
+
 alert(
-"API connection failed"
+"Unable to connect to Spectra Guard API"
 );
 
 
-}
-
-
 
 }
 
 
 
+}
 
 
 
+
+
+
+
+
+
+// =====================================
+// Scan Button
+// =====================================
 
 
 analyzeBtn.addEventListener(
+
 "click",
+
 ()=>{
+
 
 
 const url =
@@ -549,11 +735,13 @@ urlInput.value.trim();
 
 
 
+
+
 if(!url){
 
 
 alert(
-"Enter a website URL"
+"Please enter a website"
 );
 
 
@@ -564,18 +752,30 @@ return;
 
 
 
-analyzeBtn.innerText=
+
+
+analyzeBtn.innerText =
 "Scanning...";
+
 
 
 analyzeBtn.disabled=true;
 
 
 
-results.classList.add("hidden");
 
 
-scannerAnimation.classList.remove("hidden");
+results.classList.add(
+"hidden"
+);
+
+
+
+scannerAnimation.classList.remove(
+"hidden"
+);
+
+
 
 
 
@@ -585,13 +785,19 @@ runScanSteps();
 
 
 
+
 setTimeout(async()=>{
 
 
-scannerAnimation.classList.add("hidden");
+scannerAnimation.classList.add(
+"hidden"
+);
 
 
-results.classList.remove("hidden");
+
+results.classList.remove(
+"hidden"
+);
 
 
 
@@ -599,15 +805,20 @@ await fetchReport(url);
 
 
 
-analyzeBtn.innerText=
-"Analyze";
+
+
+analyzeBtn.innerText =
+"Scan Website";
+
 
 
 analyzeBtn.disabled=false;
 
 
 
+
 },3000);
+
 
 
 
