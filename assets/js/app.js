@@ -1,13 +1,8 @@
 const analyzeBtn = document.getElementById("analyzeBtn");
-
 const results = document.getElementById("results");
-
 const scannerAnimation = document.getElementById("scannerAnimation");
-
 const scoreNumber = document.getElementById("scoreNumber");
-
 const scoreCircle = document.querySelector(".score-circle");
-
 const urlInput = document.getElementById("urlInput");
 
 
@@ -20,6 +15,7 @@ function animateScore(target){
     let current = 0;
 
     scoreNumber.innerText = "0";
+
 
     const interval = setInterval(()=>{
 
@@ -40,6 +36,7 @@ function animateScore(target){
 }
 
 
+
 // =========================
 // Score Circle Animation
 // =========================
@@ -50,7 +47,6 @@ function updateCircle(target){
 
 
     const animation = setInterval(()=>{
-
 
         progress++;
 
@@ -94,8 +90,8 @@ function runScanSteps(){
 
         setTimeout(()=>{
 
-
-            const element = document.getElementById(step);
+            const element =
+            document.getElementById(step);
 
 
             if(!element) return;
@@ -148,12 +144,15 @@ async function fetchReport(url){
         );
 
 
-
         const data = await response.json();
 
 
 
-        // Update score
+        console.log(data);
+
+
+
+        // Score
 
         animateScore(data.privacy_score);
 
@@ -161,8 +160,7 @@ async function fetchReport(url){
 
 
 
-        // Update report cards
-
+        // Cards
 
         const tracker =
         document.getElementById("trackerResult");
@@ -180,7 +178,7 @@ async function fetchReport(url){
         if(tracker){
 
             tracker.innerText =
-            data.trackers + " trackers detected";
+            "Tracker scanner coming soon";
 
         }
 
@@ -189,7 +187,7 @@ async function fetchReport(url){
         if(cookies){
 
             cookies.innerText =
-            data.cookies + " cookies found";
+            "Cookie scanner coming soon";
 
         }
 
@@ -199,7 +197,9 @@ async function fetchReport(url){
 
             https.innerText =
             data.https
+
             ? "HTTPS connection detected"
+
             : "HTTPS not detected";
 
         }
@@ -234,7 +234,8 @@ async function fetchReport(url){
 analyzeBtn.addEventListener("click",()=>{
 
 
-    const url = urlInput.value.trim();
+    const url =
+    urlInput.value.trim();
 
 
 
@@ -248,12 +249,12 @@ analyzeBtn.addEventListener("click",()=>{
 
         return;
 
-
     }
 
 
 
-    analyzeBtn.innerText = "Scanning...";
+    analyzeBtn.innerText =
+    "Scanning...";
 
 
     analyzeBtn.disabled = true;
@@ -261,7 +262,6 @@ analyzeBtn.addEventListener("click",()=>{
 
 
     results.classList.add("hidden");
-
 
 
     scannerAnimation.classList.remove("hidden");
@@ -286,7 +286,8 @@ analyzeBtn.addEventListener("click",()=>{
 
 
 
-        analyzeBtn.innerText = "Analyze";
+        analyzeBtn.innerText =
+        "Analyze";
 
 
         analyzeBtn.disabled = false;
