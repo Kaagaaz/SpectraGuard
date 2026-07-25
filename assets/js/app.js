@@ -1,37 +1,66 @@
 const analyzeBtn = document.getElementById("analyzeBtn");
-
 const results = document.getElementById("results");
-
 const scannerAnimation = document.getElementById("scannerAnimation");
 
 const scoreNumber = document.getElementById("scoreNumber");
-
 const scoreCircle = document.querySelector(".score-circle");
 
 const urlInput = document.getElementById("urlInput");
 
 
-// Score animation
+let scoreTimer;
+
+
+// =====================
+// Score Animation
+// =====================
 
 function animateScore(target){
 
+    clearInterval(scoreTimer);
+
+
+    target = Number(target);
+
+
+    if(isNaN(target)){
+        target = 0;
+    }
+
+
+    if(target > 100){
+        target = 100;
+    }
+
+
+    if(target < 0){
+        target = 0;
+    }
+
+
+
     let current = 0;
 
-    scoreNumber.innerText = 0;
+
+    scoreNumber.innerText = "0";
 
 
-    const interval = setInterval(()=>{
+    scoreTimer = setInterval(()=>{
+
 
         current++;
+
 
         scoreNumber.innerText = current;
 
 
+
         if(current >= target){
 
-            clearInterval(interval);
+            clearInterval(scoreTimer);
 
         }
+
 
     },20);
 
@@ -39,86 +68,87 @@ function animateScore(target){
 
 
 
-// Circle animation
+// =====================
+// Circle
+// =====================
 
 function updateCircle(target){
 
-    let progress = 0;
+
+    if(target > 100){
+        target = 100;
+    }
 
 
-    const animation = setInterval(()=>{
-
-        progress++;
-
-
-        scoreCircle.style.background =
-        `conic-gradient(
-            #00bfff ${progress}%,
-            #222 ${progress}%
-        )`;
-
-
-        if(progress >= target){
-
-            clearInterval(animation);
-
-        }
-
-
-    },15);
+    scoreCircle.style.background =
+    `conic-gradient(
+        #00bfff ${target}%,
+        #222 ${target}%
+    )`;
 
 }
 
 
 
-// Scan animation
+// =====================
+// Scan Steps
+// =====================
 
 function runScanSteps(){
 
-    const steps = [
-        "step1",
-        "step2",
-        "step3",
-        "step4"
-    ];
+
+const steps=[
+"step1",
+"step2",
+"step3",
+"step4"
+];
 
 
-    steps.forEach((step,index)=>{
+steps.forEach((step,index)=>{
 
 
-        setTimeout(()=>{
+setTimeout(()=>{
 
 
-            const element =
-            document.getElementById(step);
+let current =
+document.getElementById(step);
 
 
-            if(index > 0){
-
-                document
-                .getElementById(steps[index-1])
-                .classList.remove("active");
-
-                document
-                .getElementById(steps[index-1])
-                .classList.add("done");
-
-            }
+current.classList.add("active");
 
 
-            element.classList.add("active");
+
+if(index>0){
+
+let previous =
+document.getElementById(
+steps[index-1]
+);
 
 
-        },index * 700);
+previous.classList.remove("active");
 
-
-    });
+previous.classList.add("done");
 
 }
 
 
 
-// Fetch API
+},index*700);
+
+
+
+});
+
+
+}
+
+
+
+// =====================
+// API
+// =====================
 
 async function fetchReport(url){
 
@@ -126,121 +156,230 @@ async function fetchReport(url){
 try{
 
 
-const response = await fetch(
+const response =
+await fetch(
 
 "https://spectra-guard-api.kaagaazcoder-safe.workers.dev/scan?url="
-+ encodeURIComponent(url)
++
+encodeURIComponent(url)
 
 );
 
 
 
-const data = await response.json();
+const data =
+await response.json();
 
 
 
-// Score
+// Website not found
 
-animateScore(data.privacy_score);
+if(data.found === false){
 
-updateCircle(data.privacy_score);
+
+alert(
+"❌ Website not found\n\n"
++
+(data.error || "Invalid website")
+);
+
+
+results.classList.add("hidden");
+
+
+return;
+
+}
+
+
+
+
+
+let score =
+Number(data.privacy_score);
+
+
+
+if(score>100){
+score=100;
+}
+
+
+if(score<0){
+score=0;
+}
+
+
+
+
+animateScore(score);
+
+updateCircle(score);
 
 
 
 
 // HTTPS
 
-document.getElementById("httpsResult").innerText =
+document.getElementById(
+"httpsResult"
+).innerText =
+
 
 data.https
 
-? "HTTPS connection detected"
+?
+"HTTPS connection detected"
 
-: "HTTPS not detected";
+:
+
+"HTTPS not detected";
 
 
 
 
 // Trackers
 
-document.getElementById("trackerResult").innerText =
+document.getElementById(
+"trackerResult"
+).innerText =
 
-(data.trackers ?? 0)
+
+(data.trackers || 0)
 +
 " trackers detected";
 
 
 
 
+
 // Cookies
 
-document.getElementById("cookieResult").innerText =
+document.getElementById(
+"cookieResult"
+).innerText =
 
-(data.cookies ?? 0)
+
+(data.cookies || 0)
 +
 " cookies found";
 
 
 
 
-// Risk (if you have a risk element)
 
-const riskElement =
-document.getElementById("riskResult");
+// Risk
+
+document.getElementById(
+"riskResult"
+).innerText =
 
 
-if(riskElement){
-
-riskElement.innerText =
 "Risk Level: "
 +
-(data.risk ?? "Unknown");
+(data.risk || "Unknown");
 
-}
 
 
 
 
 // Issues
 
-const issueElement =
-document.getElementById("issuesResult");
+const issues =
+document.getElementById(
+"issuesResult"
+);
 
 
-if(issueElement){
+
+if(data.issues && data.issues.length){
 
 
-if(data.issues && data.issues.length > 0){
-
-
-issueElement.innerHTML =
+issues.innerHTML =
 data.issues
-.map(issue=>"⚠ "+issue)
+.map(
+issue=>"⚠ "+issue
+)
 .join("<br>");
 
 
 }
+
 else{
 
 
-issueElement.innerText =
+issues.innerText =
 "No security issues detected";
 
 
 }
 
 
+
+
+
+// Recommendations
+
+const rec =
+document.getElementById(
+"recommendationList"
+);
+
+
+
+if(rec){
+
+
+rec.innerHTML="";
+
+
+if(data.issues && data.issues.length){
+
+
+data.issues.forEach(issue=>{
+
+
+let li =
+document.createElement("li");
+
+
+li.innerText =
+"Improve: "
++
+issue;
+
+
+rec.appendChild(li);
+
+
+});
+
+
+}
+
+else{
+
+
+rec.innerHTML =
+"<li>Website security looks good</li>";
+
+}
+
+
 }
 
 
 
 
 }
+
+
 
 catch(error){
 
 
 console.log(error);
+
 
 alert(
 "Unable to connect with Spectra Guard API"
@@ -255,9 +394,14 @@ alert(
 
 
 
+// =====================
 // Button
+// =====================
 
-analyzeBtn.addEventListener("click",()=>{
+
+analyzeBtn.addEventListener(
+"click",
+()=>{
 
 
 const url =
@@ -265,18 +409,16 @@ urlInput.value.trim();
 
 
 
-if(url === ""){
-
+if(!url){
 
 alert(
 "Please enter a website URL"
 );
 
-
 return;
 
-
 }
+
 
 
 
@@ -284,7 +426,7 @@ analyzeBtn.innerText =
 "Scanning...";
 
 
-analyzeBtn.disabled = true;
+analyzeBtn.disabled=true;
 
 
 
@@ -299,7 +441,7 @@ runScanSteps();
 
 
 
-setTimeout(()=>{
+setTimeout(async()=>{
 
 
 scannerAnimation.classList.add("hidden");
@@ -308,8 +450,7 @@ scannerAnimation.classList.add("hidden");
 results.classList.remove("hidden");
 
 
-
-fetchReport(url);
+await fetchReport(url);
 
 
 
@@ -317,7 +458,7 @@ analyzeBtn.innerText =
 "Analyze";
 
 
-analyzeBtn.disabled = false;
+analyzeBtn.disabled=false;
 
 
 
