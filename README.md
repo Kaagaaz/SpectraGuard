@@ -15,6 +15,8 @@ Spectra Guard analyzes publicly available website information and provides a sec
 The goal of Spectra Guard is to make website security information easier to understand for everyone.
 
 ---
+<img width="500" height="500" alt="1000054123" src="https://github.com/user-attachments/assets/74c85197-aae7-4a3a-9325-4c832a9670f9" />
+
 
 # ✨ Features
 
