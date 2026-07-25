@@ -177,19 +177,18 @@ async function fetchReport(url){
 
         if(tracker){
 
-            tracker.innerText =
-            "Tracker scanner coming soon";
+    tracker.innerText =
+    data.trackers + " trackers detected";
 
-        }
+}
 
 
+if(cookies){
 
-        if(cookies){
+    cookies.innerText =
+    data.cookies + " cookies found";
 
-            cookies.innerText =
-            "Cookie scanner coming soon";
-
-        }
+}
 
 
 
