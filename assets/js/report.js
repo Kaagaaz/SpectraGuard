@@ -3,8 +3,8 @@
 // ======================================
 
 
-const API_URL = 
-"https://spectra-guard-api.YOUR-WORKER-NAME.workers.dev";
+const API_URL =
+"https://spectra-guard-api.kaagaazcoder-safe.workers.dev";
 
 
 
