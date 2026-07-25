@@ -1,46 +1,69 @@
-// =================================
-// Spectra Guard v4 Report System
-// =================================
+// ======================================
+// Spectra Guard Report Controller
+// ======================================
 
 
-
-const scans =
-
-JSON.parse(
-localStorage.getItem("spectraScans")
-)
-
-||
-
-[];
+const API_URL = 
+"https://spectra-guard-api.YOUR-WORKER-NAME.workers.dev";
 
 
 
 
 
-const latestScan =
-scans[scans.length - 1];
+const params = new URLSearchParams(
+    window.location.search
+);
+
+
+
+const websiteURL =
+params.get("url");
 
 
 
 
 
 
-if(!latestScan){
+
+async function loadReport(){
 
 
 
-document.getElementById(
-"websiteName"
-).innerText =
+if(!websiteURL){
 
-"No scan data available";
 
+document.getElementById("websiteName").innerText =
+"No website provided";
+
+
+return;
 
 
 }
 
-else{
+
+
+
+
+
+try{
+
+
+
+const response = await fetch(
+
+API_URL +
+"/scan?url=" +
+encodeURIComponent(websiteURL)
+
+);
+
+
+
+
+
+
+const data = await response.json();
 
 
 
@@ -48,16 +71,28 @@ else{
 
 
 
-// Website
+if(!data.found){
 
 
-document.getElementById(
-"websiteName"
-).innerText =
-
-latestScan.website;
+document.getElementById("websiteName").innerText =
+"Website not found";
 
 
+return;
+
+
+}
+
+
+
+
+
+
+
+// Website name
+
+document.getElementById("websiteName").innerText =
+data.website;
 
 
 
@@ -66,14 +101,8 @@ latestScan.website;
 
 // Score
 
-
-document.getElementById(
-"reportScore"
-).innerText =
-
-latestScan.score;
-
-
+document.getElementById("score").innerText =
+data.score;
 
 
 
@@ -82,12 +111,8 @@ latestScan.score;
 
 // Risk
 
-
-document.getElementById(
-"reportRisk"
-).innerText =
-
-latestScan.risk;
+document.getElementById("risk").innerText =
+"Risk Level: " + data.risk;
 
 
 
@@ -98,22 +123,13 @@ latestScan.risk;
 
 // HTTPS
 
+document.getElementById("https").innerText =
 
-document.getElementById(
-"reportHTTPS"
-).innerText =
+data.https
 
+? "✓ HTTPS enabled"
 
-latestScan.https
-
-?
-
-"Secure HTTPS connection"
-
-:
-
-"HTTPS not detected";
-
+: "✗ HTTPS not detected";
 
 
 
@@ -124,17 +140,10 @@ latestScan.https
 
 // Cookies
 
+document.getElementById("cookies").innerText =
 
-document.getElementById(
-"reportCookies"
-).innerText =
-
-
-(latestScan.cookies || 0)
-
-+
+data.cookies +
 " cookies detected";
-
 
 
 
@@ -145,46 +154,10 @@ document.getElementById(
 
 // Trackers
 
+document.getElementById("trackers").innerText =
 
-document.getElementById(
-"reportTrackers"
-).innerText =
-
-
-(latestScan.trackers || 0)
-
-+
+data.trackers +
 " trackers detected";
-
-
-
-
-
-
-
-
-
-// Technologies
-
-
-document.getElementById(
-"reportTechnology"
-).innerText =
-
-
-latestScan.technologies &&
-
-latestScan.technologies.length
-
-?
-
-latestScan.technologies.join(", ")
-
-:
-
-"No technologies detected";
-
-
 
 
 
@@ -196,53 +169,45 @@ latestScan.technologies.join(", ")
 
 // Vulnerabilities
 
+const vulnBox =
+document.getElementById("vulnerabilities");
 
-const vulnerabilityBox =
 
-document.getElementById(
-"vulnerabilityBox"
-);
+
+vulnBox.innerHTML = "";
+
+
+
 
 
 
 if(
-latestScan.vulnerabilities &&
-
-latestScan.vulnerabilities.length
-
+data.vulnerabilities &&
+data.vulnerabilities.length > 0
 ){
 
 
 
-vulnerabilityBox.innerHTML =
+data.vulnerabilities.forEach(v=>{
+
+
+const item =
+document.createElement("p");
+
+
+item.innerHTML =
+"⚠ " +
+v.title +
+" (" +
+v.severity +
+")";
+
+
+vulnBox.appendChild(item);
 
 
 
-latestScan.vulnerabilities.map(v=>`
-
-
-<div class="info-card">
-
-
-<h3>
-⚠ ${v.severity}
-</h3>
-
-
-<p>
-${v.title}
-</p>
-
-
-<small>
-${v.description || ""}
-</small>
-
-
-</div>
-
-
-`).join("");
+});
 
 
 
@@ -251,101 +216,9 @@ ${v.description || ""}
 else{
 
 
-vulnerabilityBox.innerHTML =
+vulnBox.innerHTML =
+"✓ No vulnerabilities detected";
 
-`
-
-<div class="info-card">
-
-<p>
-No vulnerabilities detected
-</p>
-
-</div>
-
-`;
-
-}
-
-
-
-
-
-
-
-
-
-// Issues
-
-
-const issueBox =
-
-document.getElementById(
-"issueBox"
-);
-
-
-
-if(
-
-latestScan.issues &&
-
-latestScan.issues.length
-
-){
-
-
-
-issueBox.innerHTML =
-
-
-
-latestScan.issues.map(issue=>`
-
-
-<div class="info-card">
-
-
-<h3>
-⚠ ${issue.severity}
-</h3>
-
-
-<p>
-${issue.title}
-</p>
-
-
-<small>
-${issue.description || ""}
-</small>
-
-
-</div>
-
-
-`).join("");
-
-
-
-}
-
-else{
-
-
-issueBox.innerHTML =
-
-`
-
-<div class="info-card">
-
-<p>
-No security issues detected
-</p>
-
-</div>
-
-`;
 
 }
 
@@ -360,55 +233,67 @@ No security issues detected
 // Recommendations
 
 
-const recommendations =
+const list =
+document.getElementById("recommendations");
 
-document.getElementById(
-"reportRecommendations"
-);
+
+list.innerHTML = "";
+
+
 
 
 
 if(
-
-latestScan.recommendations &&
-
-latestScan.recommendations.length
-
+data.recommendations
 ){
 
 
 
-recommendations.innerHTML =
+data.recommendations.forEach(r=>{
 
 
+const li =
+document.createElement("li");
 
-latestScan.recommendations.map(item=>`
 
-<li>
-${item}
-</li>
+li.innerText = r;
 
-`).join("");
+
+list.appendChild(li);
+
+
+});
+
+
+}
+
+
 
 
 
 }
 
-else{
+
+catch(error){
 
 
-recommendations.innerHTML =
 
-`
+console.error(error);
 
-<li>
-No recommendations available
-</li>
 
-`;
+document.getElementById("websiteName").innerText =
+"Unable to connect to API";
+
+
+}
+
+
 
 }
 
 
 
-}
+
+
+
+loadReport();
