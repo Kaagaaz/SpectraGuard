@@ -8,10 +8,13 @@
 
 <title>Spectra Guard</title>
 
+
 <link rel="stylesheet" href="assets/css/variables.css">
 <link rel="stylesheet" href="assets/css/style.css">
 
+
 <link href="https://fonts.googleapis.com/css2?family=Audiowide&family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+
 
 </head>
 
@@ -25,7 +28,6 @@
 <div class="logo">
 SPECTRA GUARD
 </div>
-
 
 
 <nav>
@@ -54,7 +56,6 @@ Login
 <main>
 
 
-
 <section class="hero">
 
 
@@ -63,13 +64,11 @@ Security Intelligence For The Modern Web
 </h1>
 
 
-
 <p>
-
 Analyze websites, discover security weaknesses,
-track privacy signals and generate professional reports.
-
+track privacy signals and generate security reports.
 </p>
+
 
 
 
@@ -85,7 +84,8 @@ id="urlInput"
 
 type="url"
 
-placeholder="Enter website URL"
+placeholder="https://example.com"
+
 
 >
 
@@ -95,7 +95,6 @@ placeholder="Enter website URL"
 Scan Website
 
 </button>
-
 
 
 </div>
@@ -112,7 +111,7 @@ Scan Website
 
 
 <p>
-Scanning website...
+Analyzing website security...
 </p>
 
 
@@ -120,22 +119,22 @@ Scanning website...
 
 
 <div id="step1">
-Checking connection
+◯ Checking connection
 </div>
 
 
 <div id="step2">
-Analyzing security
+◯ Analyzing security
 </div>
 
 
 <div id="step3">
-Detecting technologies
+◯ Detecting technologies
 </div>
 
 
 <div id="step4">
-Generating report
+◯ Generating report
 </div>
 
 
@@ -156,6 +155,9 @@ Generating report
 
 
 
+
+
+
 <div class="score-card">
 
 
@@ -164,15 +166,16 @@ Security Score
 </h2>
 
 
-
 <div class="score-circle">
 
 
 <div class="score">
 
+
 <span id="scoreNumber">
 0
 </span>
+
 
 <small>
 /100
@@ -186,6 +189,9 @@ Security Score
 
 
 </div>
+
+
+
 
 
 
@@ -211,10 +217,11 @@ Checking...
 
 
 
+
 <div class="info-card">
 
 <h3>
-Risk
+Risk Level
 </h3>
 
 <p id="riskResult">
@@ -222,6 +229,7 @@ Checking...
 </p>
 
 </div>
+
 
 
 
@@ -241,6 +249,7 @@ Checking...
 
 
 
+
 <div class="info-card">
 
 <h3>
@@ -252,6 +261,7 @@ Checking...
 </p>
 
 </div>
+
 
 
 
@@ -271,10 +281,11 @@ Checking...
 
 
 
+
 <div class="info-card">
 
 <h3>
-Exposure
+Exposed Files
 </h3>
 
 <p id="exposedResult">
@@ -285,7 +296,9 @@ Checking...
 
 
 
+
 </div>
+
 
 
 
@@ -298,26 +311,54 @@ Checking...
 
 
 <h2>
-Analysis Report
+Security Analysis
 </h2>
 
 
-<p id="issuesResult">
-Scanning...
-</p>
 
+<div id="issuesResult">
+
+Scanning...
+
+</div>
+
+
+
+
+
+<h3>
+Recommendations
+</h3>
 
 
 <ul id="recommendationList">
+
 
 <li>
 Waiting...
 </li>
 
+
 </ul>
 
 
+
+
+<!-- NEW BUTTON -->
+
+<a href="report.html" class="report-button">
+
+View Full Report
+
+</a>
+
+
+
+
 </div>
+
+
+
 
 
 
@@ -330,8 +371,9 @@ Waiting...
 
 
 
-<section class="features">
 
+
+<section class="features">
 
 
 <div>
@@ -340,9 +382,11 @@ Waiting...
 Website Intelligence
 </h3>
 
+
 <p>
 Detect technologies, headers and privacy signals.
 </p>
+
 
 </div>
 
@@ -355,9 +399,11 @@ Detect technologies, headers and privacy signals.
 Security Reports
 </h3>
 
+
 <p>
-Generate detailed security analysis.
+Generate detailed security reports.
 </p>
+
 
 </div>
 
@@ -370,9 +416,11 @@ Generate detailed security analysis.
 Monitoring
 </h3>
 
+
 <p>
-Track website security changes over time.
+Track website security changes.
 </p>
+
 
 </div>
 
@@ -385,12 +433,11 @@ Track website security changes over time.
 
 
 
-
 </section>
 
 
-
 </main>
+
 
 
 
