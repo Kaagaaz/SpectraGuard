@@ -1,6 +1,5 @@
 # 🛡️ Spectra Guard
 
-![Spectra Guard Banner](https://via.placeholder.com/1200x400?text=Spectra+Guard)
 
 A modern **passive website security analyzer** that helps users understand the security posture and privacy signals of websites.
 
@@ -101,3 +100,19 @@ Examples:
 ## 📊 Security Score System
 
 Every scan generates a security score from:
+
+
+Risk levels:
+
+| Score | Risk |
+|------|------|
+| 85-100 | 🟢 Low |
+| 60-84 | 🟡 Medium |
+| 35-59 | 🟠 High |
+| 0-34 | 🔴 Critical |
+
+
+The score is calculated using multiple security factors.
+
+
+---
