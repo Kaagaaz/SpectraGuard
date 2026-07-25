@@ -1,20 +1,23 @@
 const analyzeBtn = document.getElementById("analyzeBtn");
+
 const results = document.getElementById("results");
+
 const scannerAnimation = document.getElementById("scannerAnimation");
+
 const scoreNumber = document.getElementById("scoreNumber");
+
 const scoreCircle = document.querySelector(".score-circle");
+
 const urlInput = document.getElementById("urlInput");
 
 
-// =========================
-// Privacy Score Animation
-// =========================
+// Score animation
 
 function animateScore(target){
 
     let current = 0;
 
-    scoreNumber.innerText = "0";
+    scoreNumber.innerText = 0;
 
 
     const interval = setInterval(()=>{
@@ -30,16 +33,13 @@ function animateScore(target){
 
         }
 
-
     },20);
 
 }
 
 
 
-// =========================
-// Score Circle Animation
-// =========================
+// Circle animation
 
 function updateCircle(target){
 
@@ -54,7 +54,7 @@ function updateCircle(target){
         scoreCircle.style.background =
         `conic-gradient(
             #00bfff ${progress}%,
-            #222 0%
+            #222 ${progress}%
         )`;
 
 
@@ -65,15 +65,13 @@ function updateCircle(target){
         }
 
 
-    },20);
+    },15);
 
 }
 
 
 
-// =========================
-// Scan Steps Animation
-// =========================
+// Scan animation
 
 function runScanSteps(){
 
@@ -90,26 +88,20 @@ function runScanSteps(){
 
         setTimeout(()=>{
 
+
             const element =
             document.getElementById(step);
 
 
-            if(!element) return;
-
-
             if(index > 0){
 
-                const previous =
-                document.getElementById(steps[index-1]);
+                document
+                .getElementById(steps[index-1])
+                .classList.remove("active");
 
-
-                if(previous){
-
-                    previous.classList.remove("active");
-
-                    previous.classList.add("done");
-
-                }
+                document
+                .getElementById(steps[index-1])
+                .classList.add("done");
 
             }
 
@@ -117,7 +109,7 @@ function runScanSteps(){
             element.classList.add("active");
 
 
-        }, index * 700);
+        },index * 700);
 
 
     });
@@ -126,174 +118,210 @@ function runScanSteps(){
 
 
 
-// =========================
-// Connect With Cloudflare API
-// =========================
+// Fetch API
 
 async function fetchReport(url){
 
 
-    try{
+try{
 
 
-        const response = await fetch(
+const response = await fetch(
 
-        "https://spectra-guard-api.kaagaazcoder-safe.workers.dev/scan?url="
-        + encodeURIComponent(url)
+"https://spectra-guard-api.kaagaazcoder-safe.workers.dev/scan?url="
++ encodeURIComponent(url)
 
-        );
-
-
-        const data = await response.json();
+);
 
 
 
-        console.log(data);
+const data = await response.json();
 
 
 
-        // Score
+// Score
 
-        animateScore(data.privacy_score);
+animateScore(data.privacy_score);
 
-        updateCircle(data.privacy_score);
-
-
-
-        // Cards
-
-        const tracker =
-        document.getElementById("trackerResult");
-
-
-        const cookies =
-        document.getElementById("cookieResult");
-
-
-        const https =
-        document.getElementById("httpsResult");
+updateCircle(data.privacy_score);
 
 
 
-        if(tracker){
 
-    tracker.innerText =
-    data.trackers + " trackers detected";
+// HTTPS
 
-}
+document.getElementById("httpsResult").innerText =
 
+data.https
 
-if(cookies){
+? "HTTPS connection detected"
 
-    cookies.innerText =
-    data.cookies + " cookies found";
-
-}
+: "HTTPS not detected";
 
 
 
-        if(https){
 
-            https.innerText =
-            data.https
+// Trackers
 
-            ? "HTTPS connection detected"
+document.getElementById("trackerResult").innerText =
 
-            : "HTTPS not detected";
-
-        }
+(data.trackers ?? 0)
++
+" trackers detected";
 
 
 
-    }
+
+// Cookies
+
+document.getElementById("cookieResult").innerText =
+
+(data.cookies ?? 0)
++
+" cookies found";
 
 
-    catch(error){
 
 
-        console.log(error);
+// Risk (if you have a risk element)
+
+const riskElement =
+document.getElementById("riskResult");
 
 
-        alert(
-        "Unable to connect with Spectra Guard API"
-        );
+if(riskElement){
 
-
-    }
-
+riskElement.innerText =
+"Risk Level: "
++
+(data.risk ?? "Unknown");
 
 }
 
 
 
-// =========================
-// Analyze Button
-// =========================
+
+// Issues
+
+const issueElement =
+document.getElementById("issuesResult");
+
+
+if(issueElement){
+
+
+if(data.issues && data.issues.length > 0){
+
+
+issueElement.innerHTML =
+data.issues
+.map(issue=>"⚠ "+issue)
+.join("<br>");
+
+
+}
+else{
+
+
+issueElement.innerText =
+"No security issues detected";
+
+
+}
+
+
+}
+
+
+
+
+}
+
+catch(error){
+
+
+console.log(error);
+
+alert(
+"Unable to connect with Spectra Guard API"
+);
+
+
+}
+
+
+}
+
+
+
+
+// Button
 
 analyzeBtn.addEventListener("click",()=>{
 
 
-    const url =
-    urlInput.value.trim();
+const url =
+urlInput.value.trim();
 
 
 
-    if(url === ""){
+if(url === ""){
 
 
-        alert(
-        "Please enter a website URL."
-        );
+alert(
+"Please enter a website URL"
+);
 
 
-        return;
-
-    }
+return;
 
 
-
-    analyzeBtn.innerText =
-    "Scanning...";
-
-
-    analyzeBtn.disabled = true;
+}
 
 
 
-    results.classList.add("hidden");
+analyzeBtn.innerText =
+"Scanning...";
 
 
-    scannerAnimation.classList.remove("hidden");
-
-
-
-    runScanSteps();
+analyzeBtn.disabled = true;
 
 
 
-    setTimeout(async ()=>{
+results.classList.add("hidden");
 
 
-        scannerAnimation.classList.add("hidden");
-
-
-        results.classList.remove("hidden");
+scannerAnimation.classList.remove("hidden");
 
 
 
-        await fetchReport(url);
+runScanSteps();
 
 
 
-        analyzeBtn.innerText =
-        "Analyze";
+setTimeout(()=>{
 
 
-        analyzeBtn.disabled = false;
+scannerAnimation.classList.add("hidden");
+
+
+results.classList.remove("hidden");
 
 
 
-    },3000);
+fetchReport(url);
+
+
+
+analyzeBtn.innerText =
+"Analyze";
+
+
+analyzeBtn.disabled = false;
+
+
+
+},3000);
 
 
 
