@@ -23,7 +23,6 @@
 </head>
 
 
-
 <body>
 
 
@@ -45,14 +44,17 @@ SPECTRA GUARD
 <section class="hero">
 
 
+
 <h1>
 Know what websites may learn about you.
 </h1>
 
 
+
 <p>
-Analyze website security, trackers, cookies and privacy signals before you trust a website.
+Analyze website security, privacy signals, trackers, cookies and security configuration.
 </p>
+
 
 
 
@@ -62,13 +64,21 @@ Analyze website security, trackers, cookies and privacy signals before you trust
 
 
 <input
+
 id="urlInput"
+
 type="url"
-placeholder="https://example.com">
+
+placeholder="https://example.com"
+
+>
+
 
 
 <button id="analyzeBtn">
+
 Analyze
+
 </button>
 
 
@@ -80,15 +90,21 @@ Analyze
 
 
 
+
+
 <div id="scannerAnimation" class="scanner-animation hidden">
+
 
 
 <div class="scanner-line"></div>
 
 
+
 <p>
 Analyzing website security...
 </p>
+
+
 
 
 
@@ -100,14 +116,17 @@ Analyzing website security...
 </div>
 
 
+
 <div id="step2">
-◯ Detecting cookies
+◯ Detecting technologies
 </div>
+
 
 
 <div id="step3">
-◯ Finding trackers
+◯ Checking security signals
 </div>
+
 
 
 <div id="step4">
@@ -115,7 +134,9 @@ Analyzing website security...
 </div>
 
 
+
 </div>
+
 
 
 </div>
@@ -134,12 +155,16 @@ Analyzing website security...
 
 
 
+
+
+
 <div class="score-card">
 
 
 <h2>
 Security Score
 </h2>
+
 
 
 
@@ -159,10 +184,12 @@ Security Score
 </small>
 
 
+
 </div>
 
 
 </div>
+
 
 
 </div>
@@ -176,6 +203,9 @@ Security Score
 
 
 <div class="info-grid">
+
+
+
 
 
 
@@ -200,6 +230,8 @@ Checking...
 
 
 </div>
+
+
 
 
 
@@ -233,6 +265,8 @@ Checking...
 
 
 
+
+
 <div class="info-card warning">
 
 
@@ -252,6 +286,8 @@ Checking...
 
 
 </div>
+
+
 
 
 
@@ -285,6 +321,8 @@ Checking...
 
 
 
+
+
 <div class="info-card">
 
 
@@ -304,6 +342,8 @@ Checking...
 
 
 </div>
+
+
 
 
 
@@ -335,6 +375,65 @@ Checking...
 
 
 
+
+
+
+
+<div class="info-card">
+
+
+<div class="status">
+🛡 Security TXT
+</div>
+
+
+<h3>
+Security Contact
+</h3>
+
+
+<p id="securityTxtResult">
+Checking...
+</p>
+
+
+</div>
+
+
+
+
+
+
+
+
+
+<div class="info-card warning">
+
+
+<div class="status">
+🚨 Vulnerabilities
+</div>
+
+
+<h3>
+Detected Risks
+</h3>
+
+
+<p id="vulnerabilityResult">
+Checking...
+</p>
+
+
+</div>
+
+
+
+
+
+
+
+
 </div>
 
 
@@ -348,9 +447,12 @@ Checking...
 <div class="report-summary">
 
 
+
 <h2>
 Security Analysis
 </h2>
+
+
 
 
 
@@ -379,12 +481,14 @@ Scanning...
 
 
 
+
 <div class="recommendations">
 
 
 <h3>
 Recommendations
 </h3>
+
 
 
 
@@ -406,6 +510,9 @@ Waiting for scan...
 
 
 
+
+
+
 </div>
 
 
@@ -415,8 +522,10 @@ Waiting for scan...
 
 
 
-
 </section>
+
+
+
 
 
 
@@ -424,6 +533,8 @@ Waiting for scan...
 
 
 </main>
+
+
 
 
 
