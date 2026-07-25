@@ -7,18 +7,14 @@
 const analyzeBtn =
 document.getElementById("analyzeBtn");
 
-
 const urlInput =
 document.getElementById("urlInput");
-
 
 const results =
 document.getElementById("results");
 
-
 const scannerAnimation =
 document.getElementById("scannerAnimation");
-
 
 
 const API_URL =
@@ -32,16 +28,12 @@ const API_URL =
 
 function runScanSteps(){
 
-
-const steps=[
-
+const steps = [
 "step1",
 "step2",
 "step3",
 "step4"
-
 ];
-
 
 
 steps.forEach((step,index)=>{
@@ -54,7 +46,6 @@ const current =
 document.getElementById(step);
 
 
-
 if(current){
 
 current.classList.add("active");
@@ -63,7 +54,7 @@ current.classList.add("active");
 
 
 
-if(index>0){
+if(index > 0){
 
 
 const previous =
@@ -84,9 +75,7 @@ previous.classList.add("done");
 }
 
 
-
-},index*700);
-
+}, index * 700);
 
 
 });
@@ -108,26 +97,27 @@ const scoreNumber =
 document.getElementById("scoreNumber");
 
 
-if(!scoreNumber)
-return;
+if(!scoreNumber) return;
 
 
 
-let current=0;
+let current = 0;
 
 
 
-const timer=setInterval(()=>{
+const timer =
+setInterval(()=>{
 
 
 current++;
 
 
-scoreNumber.innerText=current;
+scoreNumber.innerText =
+current;
 
 
 
-if(current>=target){
+if(current >= target){
 
 clearInterval(timer);
 
@@ -137,8 +127,98 @@ clearInterval(timer);
 },15);
 
 
+}
+
+
+
+
+
+
+
+
+
+function updateRisk(risk){
+
+
+const riskElement =
+document.getElementById("riskResult");
+
+
+if(!riskElement) return;
+
+
+
+riskElement.className = "";
+
+
+
+
+if(risk === "Low"){
+
+
+riskElement.innerHTML =
+"🟢 Low Risk";
+
+
+riskElement.classList.add(
+"risk-low"
+);
+
 
 }
+
+
+
+else if(risk === "Medium"){
+
+
+riskElement.innerHTML =
+"🟡 Medium Risk";
+
+
+riskElement.classList.add(
+"risk-medium"
+);
+
+
+}
+
+
+
+else if(risk === "High"){
+
+
+riskElement.innerHTML =
+"🟠 High Risk";
+
+
+riskElement.classList.add(
+"risk-high"
+);
+
+
+}
+
+
+
+else{
+
+
+riskElement.innerHTML =
+"🔴 Critical Risk";
+
+
+riskElement.classList.add(
+"risk-critical"
+);
+
+
+}
+
+
+
+}
+
 
 
 
@@ -150,15 +230,14 @@ clearInterval(timer);
 async function scanWebsite(url){
 
 
-
 try{
 
 
+const response =
+await fetch(
 
-const response = await fetch(
-
-API_URL+
-"/scan?url="+
+API_URL +
+"/scan?url=" +
 encodeURIComponent(url)
 
 );
@@ -167,7 +246,6 @@ encodeURIComponent(url)
 
 const data =
 await response.json();
-
 
 
 
@@ -202,11 +280,17 @@ results.classList.remove("hidden");
 
 
 
-
-
 // Score
 
 animateScore(data.score);
+
+
+
+
+// Risk
+
+updateRisk(data.risk);
+
 
 
 
@@ -216,25 +300,27 @@ animateScore(data.score);
 
 // HTTPS
 
-
 const httpsResult =
 document.getElementById(
 "httpsResult"
 );
 
 
-
 if(httpsResult){
+
 
 httpsResult.innerText =
 
 data.https
 
 ?
-"HTTPS enabled"
+
+"✓ HTTPS enabled"
 
 :
-"HTTPS not detected";
+
+"✗ HTTPS missing";
+
 
 }
 
@@ -248,20 +334,20 @@ data.https
 
 // Cookies
 
-
 const cookieResult =
 document.getElementById(
 "cookieResult"
 );
 
 
-
 if(cookieResult){
+
 
 cookieResult.innerText =
 
-data.cookies+
+data.cookies +
 " cookies detected";
+
 
 }
 
@@ -275,46 +361,20 @@ data.cookies+
 
 // Trackers
 
-
 const trackerResult =
 document.getElementById(
 "trackerResult"
 );
 
 
-
 if(trackerResult){
+
 
 trackerResult.innerText =
 
-data.trackers+
+data.trackers +
 " trackers detected";
 
-}
-
-
-
-
-
-
-
-
-
-// Risk
-
-
-const riskResult =
-document.getElementById(
-"riskResult"
-);
-
-
-
-if(riskResult){
-
-riskResult.innerText =
-
-data.risk;
 
 }
 
@@ -326,139 +386,7 @@ data.risk;
 
 
 
-// Issues
-
-
-const issuesResult =
-document.getElementById(
-"issuesResult"
-);
-
-
-
-if(issuesResult){
-
-
-
-if(
-data.issues &&
-data.issues.length>0
-){
-
-
-issuesResult.innerHTML =
-
-data.issues.map(issue=>{
-
-
-if(typeof issue==="object"){
-
-
-return "⚠ "+
-issue.title+
-"<br>";
-
-}
-
-
-return "⚠ "+issue;
-
-
-}).join("");
-
-
-
-}
-
-else{
-
-
-issuesResult.innerHTML =
-
-"✓ No issues detected";
-
-
-}
-
-
-}
-
-
-
-
-
-
-
-
-
-// Vulnerabilities
-
-
-const vulnerabilityResult =
-document.getElementById(
-"vulnerabilityResult"
-);
-
-
-
-if(vulnerabilityResult){
-
-
-
-if(
-data.vulnerabilities &&
-data.vulnerabilities.length>0
-){
-
-
-vulnerabilityResult.innerHTML =
-
-data.vulnerabilities.map(v=>{
-
-
-if(typeof v==="object"){
-
-
-return "⚠ "+
-v.title+
-"<br>";
-
-}
-
-
-return "⚠ "+v;
-
-
-}).join("");
-
-
-
-}
-
-else{
-
-
-vulnerabilityResult.innerHTML =
-
-"✓ No vulnerabilities detected";
-
-
-}
-
-
-
-}
-
-
-
-
-
-
-
-
-
-// Technologies
-
+// Technology
 
 const technologyResult =
 document.getElementById(
@@ -494,8 +422,117 @@ data.technologies.join(", ")
 
 
 
-// Recommendations
+// Issues
 
+const issuesResult =
+document.getElementById(
+"issuesResult"
+);
+
+
+
+if(issuesResult){
+
+
+if(
+data.issues &&
+data.issues.length
+){
+
+
+issuesResult.innerHTML =
+
+data.issues.map(issue=>{
+
+
+return "⚠ " +
+(
+issue.title ||
+issue
+);
+
+
+}).join("<br>");
+
+
+}
+
+else{
+
+
+issuesResult.innerHTML =
+"✓ No issues detected";
+
+
+}
+
+
+}
+
+
+
+
+
+
+
+
+
+// Vulnerabilities
+
+const vulnerabilityResult =
+document.getElementById(
+"vulnerabilityResult"
+);
+
+
+
+if(vulnerabilityResult){
+
+
+if(
+data.vulnerabilities &&
+data.vulnerabilities.length
+){
+
+
+vulnerabilityResult.innerHTML =
+
+data.vulnerabilities.map(v=>{
+
+
+return "⚠ " +
+(
+v.title ||
+v
+);
+
+
+}).join("<br>");
+
+
+}
+
+else{
+
+
+vulnerabilityResult.innerHTML =
+"✓ No vulnerabilities detected";
+
+
+}
+
+
+}
+
+
+
+
+
+
+
+
+
+// Recommendations
 
 const recommendationList =
 document.getElementById(
@@ -508,10 +545,6 @@ if(recommendationList){
 
 
 recommendationList.innerHTML="";
-
-
-
-if(data.recommendations){
 
 
 
@@ -528,7 +561,6 @@ li.innerText=item;
 recommendationList.appendChild(li);
 
 
-
 });
 
 
@@ -539,13 +571,6 @@ recommendationList.appendChild(li);
 }
 
 
-
-
-
-
-
-}
-
 catch(error){
 
 
@@ -553,11 +578,13 @@ console.error(error);
 
 
 alert(
-"Cannot connect to Spectra Guard API"
+"Unable to connect to API"
 );
 
 
 }
+
+
 
 }
 
@@ -580,7 +607,6 @@ urlInput.value.trim();
 
 
 
-
 if(!url){
 
 
@@ -598,7 +624,6 @@ return;
 
 
 
-
 if(
 !url.startsWith("http://")
 &&
@@ -607,7 +632,7 @@ if(
 
 
 url =
-"https://"+url;
+"https://" + url;
 
 
 }
@@ -622,7 +647,6 @@ analyzeBtn.innerText =
 
 
 analyzeBtn.disabled=true;
-
 
 
 
