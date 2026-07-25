@@ -422,3 +422,202 @@ header{
     font-size:18px;
 
 }
+
+/* =========================
+   Spectra Guard v2 Dashboard
+========================= */
+
+
+/* Score Glow */
+
+.score-circle{
+
+    transition:0.5s ease;
+
+    box-shadow:
+    0 0 25px rgba(0,191,255,0.5);
+
+}
+
+
+
+
+
+/* New Info Cards */
+
+.info-card{
+
+    backdrop-filter:blur(10px);
+
+    transition:
+    transform .3s ease,
+    box-shadow .3s ease;
+
+}
+
+
+
+.info-card:hover{
+
+    transform:translateY(-5px);
+
+    box-shadow:
+    0 10px 25px rgba(0,191,255,0.2);
+
+}
+
+
+
+
+
+/* Technology + Exposure Cards */
+
+
+#technologyResult,
+#exposedResult{
+
+    font-size:14px;
+
+    line-height:1.6;
+
+    word-break:break-word;
+
+}
+
+
+
+
+
+/* Risk Text */
+
+
+#riskResult{
+
+    font-weight:700;
+
+}
+
+
+
+
+
+/* Issue Report */
+
+
+#issuesResult{
+
+    line-height:1.8;
+
+}
+
+
+
+
+
+#issuesResult b{
+
+    padding:4px 8px;
+
+    border-radius:8px;
+
+}
+
+
+
+
+
+/* Severity colors */
+
+
+#issuesResult b{
+
+    color:#ffcc00;
+
+}
+
+
+
+
+
+/* Recommendations */
+
+
+#recommendationList li{
+
+    margin:10px 0;
+
+    padding:10px;
+
+    border-left:
+    3px solid #00bfff;
+
+    background:
+    rgba(0,191,255,0.08);
+
+    border-radius:8px;
+
+}
+
+
+
+
+
+/* Scanner Steps */
+
+
+.scan-steps div{
+
+    transition:.3s;
+
+}
+
+
+
+
+
+.scan-steps .active{
+
+    color:#00bfff;
+
+    transform:translateX(8px);
+
+}
+
+
+
+
+
+.scan-steps .done{
+
+    color:#00ff88;
+
+}
+
+
+
+
+
+/* Mobile */
+
+@media(max-width:700px){
+
+
+.info-grid{
+
+    grid-template-columns:
+    1fr;
+
+}
+
+
+
+.score-circle{
+
+    width:180px;
+
+    height:180px;
+
+}
+
+
+}
