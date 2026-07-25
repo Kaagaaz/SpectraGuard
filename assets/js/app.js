@@ -1,5 +1,5 @@
 // ======================================
-// Spectra Guard v5
+// Spectra Guard v5.1
 // Single Page Scanner Controller
 // ======================================
 
@@ -25,15 +25,18 @@ const API_URL =
 
 
 
-
 function runScanSteps(){
 
+
 const steps = [
+
 "step1",
 "step2",
 "step3",
 "step4"
+
 ];
+
 
 
 steps.forEach((step,index)=>{
@@ -44,6 +47,7 @@ setTimeout(()=>{
 
 const current =
 document.getElementById(step);
+
 
 
 if(current){
@@ -63,6 +67,7 @@ steps[index-1]
 );
 
 
+
 if(previous){
 
 previous.classList.remove("active");
@@ -75,7 +80,9 @@ previous.classList.add("done");
 }
 
 
+
 }, index * 700);
+
 
 
 });
@@ -89,15 +96,13 @@ previous.classList.add("done");
 
 
 
-
-function animateScore(target){
+function animateScore(score){
 
 
 const scoreNumber =
-document.getElementById("scoreNumber");
-
-
-if(!scoreNumber) return;
+document.getElementById(
+"scoreNumber"
+);
 
 
 
@@ -117,9 +122,11 @@ current;
 
 
 
-if(current >= target){
+if(current >= score){
+
 
 clearInterval(timer);
+
 
 }
 
@@ -127,9 +134,8 @@ clearInterval(timer);
 },15);
 
 
+
 }
-
-
 
 
 
@@ -140,27 +146,26 @@ clearInterval(timer);
 function updateRisk(risk){
 
 
-const riskElement =
-document.getElementById("riskResult");
-
-
-if(!riskElement) return;
-
-
-
-riskElement.className = "";
+const element =
+document.getElementById(
+"riskResult"
+);
 
 
 
+element.className = "";
 
-if(risk === "Low"){
 
 
-riskElement.innerHTML =
+
+if(risk==="Low"){
+
+
+element.innerHTML =
 "🟢 Low Risk";
 
 
-riskElement.classList.add(
+element.classList.add(
 "risk-low"
 );
 
@@ -168,15 +173,14 @@ riskElement.classList.add(
 }
 
 
+else if(risk==="Medium"){
 
-else if(risk === "Medium"){
 
-
-riskElement.innerHTML =
+element.innerHTML =
 "🟡 Medium Risk";
 
 
-riskElement.classList.add(
+element.classList.add(
 "risk-medium"
 );
 
@@ -184,15 +188,14 @@ riskElement.classList.add(
 }
 
 
+else if(risk==="High"){
 
-else if(risk === "High"){
 
-
-riskElement.innerHTML =
+element.innerHTML =
 "🟠 High Risk";
 
 
-riskElement.classList.add(
+element.classList.add(
 "risk-high"
 );
 
@@ -200,21 +203,19 @@ riskElement.classList.add(
 }
 
 
-
 else{
 
 
-riskElement.innerHTML =
+element.innerHTML =
 "🔴 Critical Risk";
 
 
-riskElement.classList.add(
+element.classList.add(
 "risk-critical"
 );
 
 
 }
-
 
 
 }
@@ -236,8 +237,8 @@ try{
 const response =
 await fetch(
 
-API_URL +
-"/scan?url=" +
+API_URL+
+"/scan?url="+
 encodeURIComponent(url)
 
 );
@@ -255,12 +256,15 @@ if(!data.found){
 
 
 alert(
-data.error ||
+data.error
+||
 "Website not found"
 );
 
 
-results.classList.add("hidden");
+results.classList.add(
+"hidden"
+);
 
 
 return;
@@ -273,8 +277,10 @@ return;
 
 
 
+results.classList.remove(
+"hidden"
+);
 
-results.classList.remove("hidden");
 
 
 
@@ -282,16 +288,17 @@ results.classList.remove("hidden");
 
 // Score
 
-animateScore(data.score);
-
+animateScore(
+data.score
+);
 
 
 
 // Risk
 
-updateRisk(data.risk);
-
-
+updateRisk(
+data.risk
+);
 
 
 
@@ -300,16 +307,10 @@ updateRisk(data.risk);
 
 // HTTPS
 
-const httpsResult =
 document.getElementById(
 "httpsResult"
-);
+).innerText =
 
-
-if(httpsResult){
-
-
-httpsResult.innerText =
 
 data.https
 
@@ -322,7 +323,6 @@ data.https
 "✗ HTTPS missing";
 
 
-}
 
 
 
@@ -330,26 +330,20 @@ data.https
 
 
 
+// Cookies count
 
-
-// Cookies
-
-const cookieResult =
 document.getElementById(
 "cookieResult"
-);
+).innerText =
 
 
-if(cookieResult){
+data.cookies.count
 
++
 
-cookieResult.innerText =
-
-data.cookies +
 " cookies detected";
 
 
-}
 
 
 
@@ -357,26 +351,20 @@ data.cookies +
 
 
 
+// Trackers count
 
-
-// Trackers
-
-const trackerResult =
 document.getElementById(
 "trackerResult"
-);
+).innerText =
 
 
-if(trackerResult){
+data.trackers.length
 
++
 
-trackerResult.innerText =
-
-data.trackers +
 " trackers detected";
 
 
-}
 
 
 
@@ -384,23 +372,13 @@ data.trackers +
 
 
 
+// Technologies
 
-
-// Technology
-
-const technologyResult =
 document.getElementById(
 "technologyResult"
-);
+).innerText =
 
 
-
-if(technologyResult){
-
-
-technologyResult.innerText =
-
-data.technologies &&
 data.technologies.length
 
 ?
@@ -412,7 +390,141 @@ data.technologies.join(", ")
 "Not detected";
 
 
-}
+
+
+
+
+
+
+
+// Security headers
+
+
+let headers = "";
+
+
+
+Object.entries(
+data.securityHeaders
+).forEach(([key,value])=>{
+
+
+headers +=
+
+value
+
+?
+
+"✓ "
+
+:
+
+"⚠ "
+
++
+
+key
+
++
+
+"<br>";
+
+
+});
+
+
+
+document.getElementById(
+"securityHeaderResult"
+).innerHTML =
+headers;
+
+
+
+
+
+
+
+
+
+// Cookie security
+
+
+const cookie =
+data.cookies;
+
+
+
+document.getElementById(
+"cookieSecurityResult"
+).innerHTML =
+
+
+"Secure: "
+
++
+
+(
+cookie.secure
+?
+"✓"
+:
+"⚠"
+)
+
++
+
+"<br>HttpOnly: "
+
++
+
+(
+cookie.httpOnly
+?
+"✓"
+:
+"⚠"
+)
+
++
+
+"<br>SameSite: "
+
++
+
+(
+cookie.sameSite
+?
+"✓"
+:
+"⚠"
+);
+
+
+
+
+
+
+
+
+
+// Tracker details
+
+
+document.getElementById(
+"trackerDetailResult"
+).innerHTML =
+
+
+data.trackers.length
+
+?
+
+data.trackers.join("<br>")
+
+:
+
+"✓ No trackers detected";
 
 
 
@@ -424,35 +536,39 @@ data.technologies.join(", ")
 
 // Issues
 
-const issuesResult =
+
+const issuesBox =
 document.getElementById(
 "issuesResult"
 );
 
 
 
-if(issuesResult){
+issuesBox.innerHTML = "";
 
 
-if(
-data.issues &&
-data.issues.length
-){
 
 
-issuesResult.innerHTML =
-
-data.issues.map(issue=>{
+if(data.issues.length){
 
 
-return "⚠ " +
-(
-issue.title ||
-issue
-);
+data.issues.forEach(issue=>{
 
 
-}).join("<br>");
+issuesBox.innerHTML +=
+
+"⚠ "
+
++
+
+issue.title
+
++
+
+"<br>";
+
+
+});
 
 
 }
@@ -460,11 +576,8 @@ issue
 else{
 
 
-issuesResult.innerHTML =
+issuesBox.innerHTML =
 "✓ No issues detected";
-
-
-}
 
 
 }
@@ -479,35 +592,39 @@ issuesResult.innerHTML =
 
 // Vulnerabilities
 
-const vulnerabilityResult =
+
+const vulnBox =
 document.getElementById(
 "vulnerabilityResult"
 );
 
 
 
-if(vulnerabilityResult){
+vulnBox.innerHTML="";
 
 
-if(
-data.vulnerabilities &&
-data.vulnerabilities.length
-){
 
 
-vulnerabilityResult.innerHTML =
-
-data.vulnerabilities.map(v=>{
+if(data.vulnerabilities.length){
 
 
-return "⚠ " +
-(
-v.title ||
-v
-);
+data.vulnerabilities.forEach(v=>{
 
 
-}).join("<br>");
+vulnBox.innerHTML +=
+
+"⚠ "
+
++
+
+v.title
+
++
+
+"<br>";
+
+
+});
 
 
 }
@@ -515,11 +632,8 @@ v
 else{
 
 
-vulnerabilityResult.innerHTML =
+vulnBox.innerHTML =
 "✓ No vulnerabilities detected";
-
-
-}
 
 
 }
@@ -534,17 +648,15 @@ vulnerabilityResult.innerHTML =
 
 // Recommendations
 
-const recommendationList =
+
+const list =
 document.getElementById(
 "recommendationList"
 );
 
 
 
-if(recommendationList){
-
-
-recommendationList.innerHTML="";
+list.innerHTML="";
 
 
 
@@ -552,24 +664,26 @@ data.recommendations.forEach(item=>{
 
 
 const li =
-document.createElement("li");
+document.createElement(
+"li"
+);
 
 
 li.innerText=item;
 
 
-recommendationList.appendChild(li);
+list.appendChild(li);
 
 
 });
 
 
+
+
+
+
+
 }
-
-
-
-}
-
 
 catch(error){
 
@@ -578,7 +692,7 @@ console.error(error);
 
 
 alert(
-"Unable to connect to API"
+"API connection failed"
 );
 
 
@@ -607,6 +721,7 @@ urlInput.value.trim();
 
 
 
+
 if(!url){
 
 
@@ -624,6 +739,7 @@ return;
 
 
 
+
 if(
 !url.startsWith("http://")
 &&
@@ -632,7 +748,7 @@ if(
 
 
 url =
-"https://" + url;
+"https://"+url;
 
 
 }
@@ -646,12 +762,14 @@ analyzeBtn.innerText =
 "Scanning...";
 
 
-analyzeBtn.disabled=true;
+analyzeBtn.disabled =
+true;
 
 
 
-
-results.classList.add("hidden");
+results.classList.add(
+"hidden"
+);
 
 
 
@@ -666,6 +784,7 @@ scannerAnimation.classList.remove(
 
 
 runScanSteps();
+
 
 
 
@@ -693,7 +812,8 @@ analyzeBtn.innerText =
 "Analyze";
 
 
-analyzeBtn.disabled=false;
+analyzeBtn.disabled =
+false;
 
 
 
