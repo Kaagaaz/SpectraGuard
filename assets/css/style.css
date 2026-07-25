@@ -612,3 +612,23 @@ button:hover{
 
 
 }
+
+.risk-low{
+    color:#22c55e;
+    text-shadow:0 0 15px #22c55e;
+}
+
+.risk-medium{
+    color:#eab308;
+    text-shadow:0 0 15px #eab308;
+}
+
+.risk-high{
+    color:#f97316;
+    text-shadow:0 0 15px #f97316;
+}
+
+.risk-critical{
+    color:#ef4444;
+    text-shadow:0 0 15px #ef4444;
+}
