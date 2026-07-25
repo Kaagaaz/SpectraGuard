@@ -1,31 +1,57 @@
+// =================================
 // Spectra Guard v4 Dashboard
-
-
-const websiteCount =
-document.querySelector(".stats-grid .dashboard-card:nth-child(1) span");
-
-
-const averageScore =
-document.querySelector(".stats-grid .dashboard-card:nth-child(2) span");
-
-
-const threatCount =
-document.querySelector(".stats-grid .dashboard-card:nth-child(3) span");
-
-
-
-const emptyState =
-document.querySelector(".empty-state");
-
+// =================================
 
 
 const scans =
-JSON.parse(localStorage.getItem("spectraScans")) || [];
+JSON.parse(
+localStorage.getItem("spectraScans")
+)
+||
+[];
 
 
 
 
-// Update statistics
+
+const websiteCount =
+document.getElementById(
+"websiteCount"
+);
+
+
+const averageScore =
+document.getElementById(
+"averageScore"
+);
+
+
+const threatCount =
+document.getElementById(
+"threatCount"
+);
+
+
+const websiteList =
+document.getElementById(
+"websiteList"
+);
+
+
+const scanHistory =
+document.getElementById(
+"scanHistory"
+);
+
+
+
+
+
+
+
+// ================================
+// Statistics
+// ================================
 
 
 if(scans.length > 0){
@@ -36,7 +62,7 @@ scans.length;
 
 
 
-let total = 0;
+let totalScore = 0;
 
 let threats = 0;
 
@@ -45,12 +71,15 @@ let threats = 0;
 scans.forEach(scan=>{
 
 
-total += scan.score || 0;
+totalScore +=
+Number(scan.score || 0);
 
 
 
-if(scan.risk === "High" ||
-scan.risk === "Critical"){
+if(
+scan.risk === "High" ||
+scan.risk === "Critical"
+){
 
 threats++;
 
@@ -62,7 +91,9 @@ threats++;
 
 
 averageScore.innerText =
-Math.round(total/scans.length);
+Math.round(
+totalScore / scans.length
+);
 
 
 
@@ -71,11 +102,28 @@ threats;
 
 
 
-emptyState.innerHTML = "";
+}
 
 
 
-scans.forEach(scan=>{
+
+
+
+
+// ================================
+// Website Cards
+// ================================
+
+
+if(scans.length > 0){
+
+
+websiteList.innerHTML = "";
+
+
+
+scans.reverse().forEach(scan=>{
+
 
 
 const card =
@@ -84,33 +132,123 @@ document.createElement("div");
 
 
 card.className =
-"dashboard-card";
+"info-card";
 
 
 
 card.innerHTML = `
 
-<h3>${scan.website}</h3>
+
+<h3>
+🌐 ${scan.website}
+</h3>
+
 
 <p>
-Score:
-<b>${scan.score}/100</b>
+Security Score:
+<b>
+${scan.score}/100
+</b>
 </p>
+
 
 <p>
 Risk:
 ${scan.risk}
 </p>
 
-<a href="report.html">
+
+<p>
+Last Scan:
+${scan.date}
+</p>
+
+
+<a href="report.html"
+class="report-button">
+
 View Report
+
 </a>
+
 
 `;
 
 
 
-emptyState.appendChild(card);
+websiteList.appendChild(card);
+
+
+
+});
+
+
+
+}
+
+
+
+
+
+
+
+
+
+// ================================
+// Scan History
+// ================================
+
+
+if(scans.length > 0){
+
+
+scanHistory.innerHTML = "";
+
+
+
+scans.forEach(scan=>{
+
+
+const item =
+document.createElement("div");
+
+
+
+item.className =
+"info-card";
+
+
+
+item.innerHTML = `
+
+
+<h3>
+${scan.website}
+</h3>
+
+
+<p>
+Score:
+${scan.score}/100
+</p>
+
+
+<p>
+Risk:
+${scan.risk}
+</p>
+
+
+<small>
+${scan.date}
+</small>
+
+
+`;
+
+
+
+scanHistory.appendChild(item);
 
 
 
