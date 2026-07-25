@@ -1,14 +1,21 @@
 const analyzeBtn = document.getElementById("analyzeBtn");
+
 const results = document.getElementById("results");
-const scannerAnimation = document.getElementById("scannerAnimation");
 
-const scoreNumber = document.getElementById("scoreNumber");
-const scoreCircle = document.querySelector(".score-circle");
+const scannerAnimation =
+document.getElementById("scannerAnimation");
 
-const urlInput = document.getElementById("urlInput");
+const scoreNumber =
+document.getElementById("scoreNumber");
+
+const scoreCircle =
+document.querySelector(".score-circle");
+
+const urlInput =
+document.getElementById("urlInput");
 
 
-let scoreTimer;
+let scoreAnimation;
 
 
 // =====================
@@ -17,92 +24,100 @@ let scoreTimer;
 
 function animateScore(target){
 
-    clearInterval(scoreTimer);
+
+clearInterval(scoreAnimation);
 
 
-    target = Number(target);
+target = Number(target);
 
 
-    if(isNaN(target)){
-        target = 0;
-    }
+if(isNaN(target)){
+target = 0;
+}
 
 
-    if(target > 100){
-        target = 100;
-    }
-
-
-    if(target < 0){
-        target = 0;
-    }
+target = Math.max(0, Math.min(100,target));
 
 
 
-    let current = 0;
+let current = 0;
 
 
-    scoreNumber.innerText = "0";
-
-
-    scoreTimer = setInterval(()=>{
-
-
-        current++;
-
-
-        scoreNumber.innerText = current;
+scoreNumber.innerText = "0";
 
 
 
-        if(current >= target){
-
-            clearInterval(scoreTimer);
-
-        }
+scoreAnimation =
+setInterval(()=>{
 
 
-    },20);
+current++;
+
+
+scoreNumber.innerText =
+current;
+
+
+
+if(current >= target){
+
+clearInterval(scoreAnimation);
+
+}
+
+
+},20);
+
+
 
 }
 
 
 
+
 // =====================
-// Circle
+// Circle Update
 // =====================
 
-function updateCircle(target){
+
+function updateCircle(score){
 
 
-    if(target > 100){
-        target = 100;
-    }
+score =
+Math.max(0,Math.min(100,score));
 
 
-    scoreCircle.style.background =
-    `conic-gradient(
-        #00bfff ${target}%,
-        #222 ${target}%
-    )`;
+
+scoreCircle.style.background =
+
+`conic-gradient(
+#00bfff ${score}%,
+#222 ${score}%
+)`;
 
 }
 
 
 
+
+
 // =====================
-// Scan Steps
+// Scanner Animation
 // =====================
+
 
 function runScanSteps(){
 
 
 const steps=[
+
 "step1",
 "step2",
 "step3",
 "step4"
+
 ];
+
 
 
 steps.forEach((step,index)=>{
@@ -111,32 +126,40 @@ steps.forEach((step,index)=>{
 setTimeout(()=>{
 
 
-let current =
+const element =
 document.getElementById(step);
 
 
-current.classList.add("active");
+
+element.classList.add("active");
 
 
 
 if(index>0){
 
-let previous =
+
+const previous =
 document.getElementById(
 steps[index-1]
 );
 
 
-previous.classList.remove("active");
 
-previous.classList.add("done");
+previous.classList.remove(
+"active"
+);
+
+
+previous.classList.add(
+"done"
+);
+
 
 }
 
 
 
 },index*700);
-
 
 
 });
@@ -146,11 +169,18 @@ previous.classList.add("done");
 
 
 
+
+
+
+
+
 // =====================
-// API
+// API SCAN
 // =====================
 
+
 async function fetchReport(url){
+
 
 
 try{
@@ -172,16 +202,22 @@ await response.json();
 
 
 
-// Website not found
+
+
+
+// Website invalid
+
 
 if(data.found === false){
 
 
 alert(
-"❌ Website not found\n\n"
+"❌ "
 +
-(data.error || "Invalid website")
+(data.error ||
+"Website not found")
 );
+
 
 
 results.classList.add("hidden");
@@ -189,37 +225,39 @@ results.classList.add("hidden");
 
 return;
 
+
 }
 
 
 
 
 
-let score =
-Number(data.privacy_score);
+
+// SCORE
+
+
+animateScore(
+data.score
+||
+data.privacy_score
+);
 
 
 
-if(score>100){
-score=100;
-}
-
-
-if(score<0){
-score=0;
-}
+updateCircle(
+data.score
+||
+data.privacy_score
+);
 
 
 
-
-animateScore(score);
-
-updateCircle(score);
 
 
 
 
 // HTTPS
+
 
 document.getElementById(
 "httpsResult"
@@ -229,6 +267,7 @@ document.getElementById(
 data.https
 
 ?
+
 "HTTPS connection detected"
 
 :
@@ -238,7 +277,12 @@ data.https
 
 
 
-// Trackers
+
+
+
+
+// TRACKERS
+
 
 document.getElementById(
 "trackerResult"
@@ -253,7 +297,11 @@ document.getElementById(
 
 
 
-// Cookies
+
+
+
+// COOKIES
+
 
 document.getElementById(
 "cookieResult"
@@ -268,22 +316,102 @@ document.getElementById(
 
 
 
-// Risk
+
+
+
+
+// RISK
+
 
 document.getElementById(
 "riskResult"
 ).innerText =
 
 
-"Risk Level: "
-+
-(data.risk || "Unknown");
+data.risk
+||
+"Unknown";
 
 
 
 
 
-// Issues
+
+
+
+
+// TECHNOLOGY
+
+
+const tech =
+document.getElementById(
+"technologyResult"
+);
+
+
+
+if(data.technologies &&
+data.technologies.length){
+
+
+tech.innerText =
+data.technologies.join(", ");
+
+
+}
+
+else{
+
+
+tech.innerText =
+"No technologies detected";
+
+}
+
+
+
+
+
+
+
+
+// EXPOSED FILES
+
+
+const exposed =
+document.getElementById(
+"exposedResult"
+);
+
+
+
+if(data.exposed_files &&
+data.exposed_files.length){
+
+
+exposed.innerText =
+data.exposed_files.join(", ");
+
+
+}
+
+else{
+
+
+exposed.innerText =
+"No exposed files found";
+
+}
+
+
+
+
+
+
+
+
+// ISSUES
+
 
 const issues =
 document.getElementById(
@@ -292,15 +420,34 @@ document.getElementById(
 
 
 
-if(data.issues && data.issues.length){
+if(data.issues &&
+data.issues.length){
+
 
 
 issues.innerHTML =
-data.issues
-.map(
-issue=>"⚠ "+issue
-)
-.join("<br>");
+data.issues.map(issue=>{
+
+
+return (
+
+"⚠ <b>"
++
+issue.severity
++
+"</b> - "
++
+issue.title
++
+"<br>"
++
+issue.description
+
+);
+
+
+}).join("<br><br>");
+
 
 
 }
@@ -318,25 +465,31 @@ issues.innerText =
 
 
 
-// Recommendations
 
-const rec =
+
+
+
+
+// RECOMMENDATIONS
+
+
+const recommendation =
 document.getElementById(
 "recommendationList"
 );
 
 
 
-if(rec){
+recommendation.innerHTML="";
 
 
-rec.innerHTML="";
+
+if(data.recommendations &&
+data.recommendations.length){
 
 
-if(data.issues && data.issues.length){
 
-
-data.issues.forEach(issue=>{
+data.recommendations.forEach(item=>{
 
 
 let li =
@@ -344,12 +497,10 @@ document.createElement("li");
 
 
 li.innerText =
-"Improve: "
-+
-issue;
+item;
 
 
-rec.appendChild(li);
+recommendation.appendChild(li);
 
 
 });
@@ -360,13 +511,12 @@ rec.appendChild(li);
 else{
 
 
-rec.innerHTML =
-"<li>Website security looks good</li>";
+recommendation.innerHTML =
+"<li>Security configuration looks good</li>";
 
 }
 
 
-}
 
 
 
@@ -382,20 +532,28 @@ console.log(error);
 
 
 alert(
-"Unable to connect with Spectra Guard API"
+"Unable to connect to Spectra Guard API"
 );
 
 
 }
 
 
+
+
+
 }
 
 
 
 
+
+
+
+
+
 // =====================
-// Button
+// BUTTON
 // =====================
 
 
@@ -404,18 +562,23 @@ analyzeBtn.addEventListener(
 ()=>{
 
 
+
 const url =
 urlInput.value.trim();
 
 
 
+
 if(!url){
+
 
 alert(
 "Please enter a website URL"
 );
 
+
 return;
+
 
 }
 
@@ -430,10 +593,17 @@ analyzeBtn.disabled=true;
 
 
 
-results.classList.add("hidden");
 
 
-scannerAnimation.classList.remove("hidden");
+results.classList.add(
+"hidden"
+);
+
+
+
+scannerAnimation.classList.remove(
+"hidden"
+);
 
 
 
@@ -441,16 +611,26 @@ runScanSteps();
 
 
 
+
+
 setTimeout(async()=>{
 
 
-scannerAnimation.classList.add("hidden");
+scannerAnimation.classList.add(
+"hidden"
+);
 
 
-results.classList.remove("hidden");
+
+results.classList.remove(
+"hidden"
+);
+
 
 
 await fetchReport(url);
+
+
 
 
 
@@ -463,6 +643,7 @@ analyzeBtn.disabled=false;
 
 
 },3000);
+
 
 
 
