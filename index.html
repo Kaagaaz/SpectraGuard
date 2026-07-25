@@ -19,7 +19,6 @@
 <link rel="stylesheet" href="assets/css/style.css">
 <link rel="stylesheet" href="assets/css/animations.css">
 
-
 </head>
 
 
@@ -44,6 +43,7 @@ SPECTRA GUARD
 
 <main>
 
+
 <section class="hero">
 
 
@@ -53,13 +53,9 @@ Know what websites may learn about you.
 
 
 <p>
-
 Analyze website security, privacy signals,
 trackers, cookies and security weaknesses.
-
 </p>
-
-
 
 
 
@@ -75,8 +71,6 @@ id="urlInput"
 type="text"
 
 placeholder="https://example.com"
-
-autocomplete="off"
 
 >
 
@@ -97,21 +91,13 @@ Analyze
 
 
 
-<div 
-id="scannerAnimation"
-class="scanner-animation hidden"
->
 
-
-<div class="scanner-line"></div>
-
+<div id="scannerAnimation" class="scanner-animation hidden">
 
 
 <p>
 Analyzing website security...
 </p>
-
-
 
 
 <div class="scan-steps">
@@ -123,24 +109,23 @@ Analyzing website security...
 
 
 <div id="step2">
-◯ Detecting cookies
+◯ Checking security headers
 </div>
 
 
 <div id="step3">
-◯ Finding trackers
+◯ Analyzing cookies and trackers
 </div>
 
 
 <div id="step4">
-◯ Generating report
+◯ Generating security report
 </div>
 
 
 </div>
 
 
-
 </div>
 
 
@@ -149,10 +134,9 @@ Analyzing website security...
 
 
 
-<section 
-id="results"
-class="results hidden"
->
+
+
+<section id="results" class="results hidden">
 
 
 
@@ -166,41 +150,33 @@ Security Score
 </h2>
 
 
-
 <div class="score-circle">
 
 
 <div class="score">
 
-
 <span id="scoreNumber">
 0
 </span>
-
 
 <small>
 /100
 </small>
 
-
 </div>
 
 
 </div>
-
-
-
 
 
 <h3>
-Risk Level
+Security Status
 </h3>
 
 
 <p id="riskResult">
 Checking...
 </p>
-
 
 
 </div>
@@ -217,29 +193,17 @@ Checking...
 
 
 
-
-
-<div class="info-card safe">
-
-
-<div class="status">
-🔒 HTTPS
-</div>
-
+<div class="info-card">
 
 <h3>
-Connection
+🔒 HTTPS
 </h3>
-
 
 <p id="httpsResult">
 Checking...
 </p>
 
-
 </div>
-
-
 
 
 
@@ -247,24 +211,15 @@ Checking...
 
 <div class="info-card">
 
-
-<div class="status">
-🍪 Cookies
-</div>
-
-
 <h3>
-Cookies
+🍪 Cookies
 </h3>
-
 
 <p id="cookieResult">
 Checking...
 </p>
 
-
 </div>
-
 
 
 
@@ -273,24 +228,15 @@ Checking...
 
 <div class="info-card">
 
-
-<div class="status">
-📡 Trackers
-</div>
-
-
 <h3>
-Trackers
+📡 Trackers
 </h3>
-
 
 <p id="trackerResult">
 Checking...
 </p>
 
-
 </div>
-
 
 
 
@@ -299,24 +245,15 @@ Checking...
 
 <div class="info-card">
 
-
-<div class="status">
-⚙ Technology
-</div>
-
-
 <h3>
-Detected Stack
+⚙ Technologies
 </h3>
-
 
 <p id="technologyResult">
 Checking...
 </p>
 
-
 </div>
-
 
 
 
@@ -335,9 +272,24 @@ Checking...
 
 
 
-<h2>
-Security Analysis
-</h2>
+<div class="report-item">
+
+
+<h3>
+🛡 Security Headers
+</h3>
+
+
+<p id="securityHeaderResult">
+
+Scanning...
+
+</p>
+
+
+</div>
+
+
 
 
 
@@ -347,9 +299,57 @@ Security Analysis
 <div class="report-item">
 
 
-<span>
-Detected Issues
-</span>
+<h3>
+🍪 Cookie Security
+</h3>
+
+
+<p id="cookieSecurityResult">
+
+Scanning...
+
+</p>
+
+
+</div>
+
+
+
+
+
+
+
+
+<div class="report-item">
+
+
+<h3>
+📡 Tracker Details
+</h3>
+
+
+<p id="trackerDetailResult">
+
+Scanning...
+
+</p>
+
+
+</div>
+
+
+
+
+
+
+
+
+<div class="report-item">
+
+
+<h3>
+⚠ Detected Issues
+</h3>
 
 
 <p id="issuesResult">
@@ -371,9 +371,9 @@ Scanning...
 <div class="report-item">
 
 
-<span>
-Vulnerabilities
-</span>
+<h3>
+🚨 Vulnerabilities
+</h3>
 
 
 <p id="vulnerabilityResult">
@@ -401,19 +401,15 @@ Recommendations
 </h3>
 
 
-
 <ul id="recommendationList">
-
 
 <li>
 Waiting for scan...
 </li>
 
-
 </ul>
 
 
-
 </div>
 
 
@@ -422,15 +418,12 @@ Waiting for scan...
 
 
 </div>
-
 
 
 
 
 
 </section>
-
-
 
 
 
