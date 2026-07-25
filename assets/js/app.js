@@ -1,19 +1,23 @@
 // ======================================
-// Spectra Guard Frontend Controller v4
+// Spectra Guard v5
+// Single Page Scanner Controller
 // ======================================
 
 
-const analyzeBtn = document.getElementById("analyzeBtn");
+const analyzeBtn =
+document.getElementById("analyzeBtn");
 
-const urlInput = document.getElementById("urlInput");
 
-const scannerAnimation =
-document.getElementById("scannerAnimation");
+const urlInput =
+document.getElementById("urlInput");
+
 
 const results =
 document.getElementById("results");
 
 
+const scannerAnimation =
+document.getElementById("scannerAnimation");
 
 
 
@@ -26,14 +30,10 @@ const API_URL =
 
 
 
-
-
-// Scanner animation steps
-
 function runScanSteps(){
 
 
-const steps = [
+const steps=[
 
 "step1",
 "step2",
@@ -55,27 +55,37 @@ document.getElementById(step);
 
 
 
-if(index > 0){
+if(current){
+
+current.classList.add("active");
+
+}
 
 
-document
-.getElementById(steps[index-1])
-.classList.remove("active");
 
-document
-.getElementById(steps[index-1])
-.classList.add("done");
+if(index>0){
+
+
+const previous =
+document.getElementById(
+steps[index-1]
+);
+
+
+if(previous){
+
+previous.classList.remove("active");
+
+previous.classList.add("done");
+
+}
 
 
 }
 
 
 
-current.classList.add("active");
-
-
-
-}, index * 700);
+},index*700);
 
 
 
@@ -91,8 +101,51 @@ current.classList.add("active");
 
 
 
+function animateScore(target){
 
-// Main API request
+
+const scoreNumber =
+document.getElementById("scoreNumber");
+
+
+if(!scoreNumber)
+return;
+
+
+
+let current=0;
+
+
+
+const timer=setInterval(()=>{
+
+
+current++;
+
+
+scoreNumber.innerText=current;
+
+
+
+if(current>=target){
+
+clearInterval(timer);
+
+}
+
+
+},15);
+
+
+
+}
+
+
+
+
+
+
+
 
 async function scanWebsite(url){
 
@@ -104,13 +157,11 @@ try{
 
 const response = await fetch(
 
-API_URL +
-"/scan?url=" +
+API_URL+
+"/scan?url="+
 encodeURIComponent(url)
 
 );
-
-
 
 
 
@@ -122,13 +173,16 @@ await response.json();
 
 
 
-
 if(!data.found){
 
 
 alert(
+data.error ||
 "Website not found"
 );
+
+
+results.classList.add("hidden");
 
 
 return;
@@ -141,25 +195,349 @@ return;
 
 
 
-// Save report
 
-localStorage.setItem(
+results.classList.remove("hidden");
 
-"scanResult",
 
-JSON.stringify(data)
 
+
+
+
+
+// Score
+
+animateScore(data.score);
+
+
+
+
+
+
+
+// HTTPS
+
+
+const httpsResult =
+document.getElementById(
+"httpsResult"
 );
 
 
 
+if(httpsResult){
+
+httpsResult.innerText =
+
+data.https
+
+?
+"HTTPS enabled"
+
+:
+"HTTPS not detected";
+
+}
 
 
 
-// Open report page
 
-window.location.href =
-"report.html";
+
+
+
+
+
+// Cookies
+
+
+const cookieResult =
+document.getElementById(
+"cookieResult"
+);
+
+
+
+if(cookieResult){
+
+cookieResult.innerText =
+
+data.cookies+
+" cookies detected";
+
+}
+
+
+
+
+
+
+
+
+
+// Trackers
+
+
+const trackerResult =
+document.getElementById(
+"trackerResult"
+);
+
+
+
+if(trackerResult){
+
+trackerResult.innerText =
+
+data.trackers+
+" trackers detected";
+
+}
+
+
+
+
+
+
+
+
+
+// Risk
+
+
+const riskResult =
+document.getElementById(
+"riskResult"
+);
+
+
+
+if(riskResult){
+
+riskResult.innerText =
+
+data.risk;
+
+}
+
+
+
+
+
+
+
+
+
+// Issues
+
+
+const issuesResult =
+document.getElementById(
+"issuesResult"
+);
+
+
+
+if(issuesResult){
+
+
+
+if(
+data.issues &&
+data.issues.length>0
+){
+
+
+issuesResult.innerHTML =
+
+data.issues.map(issue=>{
+
+
+if(typeof issue==="object"){
+
+
+return "⚠ "+
+issue.title+
+"<br>";
+
+}
+
+
+return "⚠ "+issue;
+
+
+}).join("");
+
+
+
+}
+
+else{
+
+
+issuesResult.innerHTML =
+
+"✓ No issues detected";
+
+
+}
+
+
+}
+
+
+
+
+
+
+
+
+
+// Vulnerabilities
+
+
+const vulnerabilityResult =
+document.getElementById(
+"vulnerabilityResult"
+);
+
+
+
+if(vulnerabilityResult){
+
+
+
+if(
+data.vulnerabilities &&
+data.vulnerabilities.length>0
+){
+
+
+vulnerabilityResult.innerHTML =
+
+data.vulnerabilities.map(v=>{
+
+
+if(typeof v==="object"){
+
+
+return "⚠ "+
+v.title+
+"<br>";
+
+}
+
+
+return "⚠ "+v;
+
+
+}).join("");
+
+
+
+}
+
+else{
+
+
+vulnerabilityResult.innerHTML =
+
+"✓ No vulnerabilities detected";
+
+
+}
+
+
+
+}
+
+
+
+
+
+
+
+
+
+// Technologies
+
+
+const technologyResult =
+document.getElementById(
+"technologyResult"
+);
+
+
+
+if(technologyResult){
+
+
+technologyResult.innerText =
+
+data.technologies &&
+data.technologies.length
+
+?
+
+data.technologies.join(", ")
+
+:
+
+"Not detected";
+
+
+}
+
+
+
+
+
+
+
+
+
+// Recommendations
+
+
+const recommendationList =
+document.getElementById(
+"recommendationList"
+);
+
+
+
+if(recommendationList){
+
+
+recommendationList.innerHTML="";
+
+
+
+if(data.recommendations){
+
+
+
+data.recommendations.forEach(item=>{
+
+
+const li =
+document.createElement("li");
+
+
+li.innerText=item;
+
+
+recommendationList.appendChild(li);
+
+
+
+});
+
+
+}
+
+
+
+}
+
 
 
 
@@ -171,36 +549,24 @@ window.location.href =
 catch(error){
 
 
-
 console.error(error);
 
 
 alert(
-
-"Unable to connect to Spectra Guard API"
-
+"Cannot connect to Spectra Guard API"
 );
 
 
+}
 
 }
 
 
 
-}
 
 
 
 
-
-
-
-
-
-// Analyze button
-
-
-if(analyzeBtn){
 
 
 analyzeBtn.addEventListener(
@@ -208,18 +574,18 @@ analyzeBtn.addEventListener(
 ()=>{
 
 
-const website =
+let url =
 urlInput.value.trim();
 
 
 
 
 
-if(!website){
+if(!url){
 
 
 alert(
-"Please enter a website URL"
+"Enter a website URL"
 );
 
 
@@ -233,31 +599,18 @@ return;
 
 
 
-
-let formattedURL =
-website;
-
-
-
-
-
-
-// Add https automatically
-
 if(
-!formattedURL.startsWith("http://")
+!url.startsWith("http://")
 &&
-!formattedURL.startsWith("https://")
+!url.startsWith("https://")
 ){
 
 
-formattedURL =
-"https://" + formattedURL;
+url =
+"https://"+url;
 
 
 }
-
-
 
 
 
@@ -268,12 +621,13 @@ analyzeBtn.innerText =
 "Scanning...";
 
 
-analyzeBtn.disabled =
-true;
+analyzeBtn.disabled=true;
 
 
 
 
+
+results.classList.add("hidden");
 
 
 
@@ -294,11 +648,28 @@ runScanSteps();
 
 
 
-
 setTimeout(()=>{
 
 
-scanWebsite(formattedURL);
+scanWebsite(url);
+
+
+
+if(scannerAnimation){
+
+scannerAnimation.classList.add(
+"hidden"
+);
+
+}
+
+
+
+analyzeBtn.innerText =
+"Analyze";
+
+
+analyzeBtn.disabled=false;
 
 
 
@@ -306,8 +677,4 @@ scanWebsite(formattedURL);
 
 
 
-
 });
-
-
-}
