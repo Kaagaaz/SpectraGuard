@@ -3,268 +3,345 @@
 
 <head>
 
-    <!-- Basic Meta -->
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <!-- Website Title -->
-    <title>Spectra Guard</title>
+<title>Spectra Guard</title>
 
-    <!-- Google Font -->
-    <link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 
 <link href="https://fonts.googleapis.com/css2?family=Audiowide&family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
 
-    <!-- CSS -->
-    <link rel="stylesheet" href="assets/css/variables.css">
-    <link rel="stylesheet" href="assets/css/style.css">
-    <link rel="stylesheet" href="assets/css/animations.css">
+
+<link rel="stylesheet" href="assets/css/variables.css">
+<link rel="stylesheet" href="assets/css/style.css">
+<link rel="stylesheet" href="assets/css/animations.css">
+
 
 </head>
 
+
 <body>
 
-    <!-- =========================
-         Navigation
-    ========================== -->
 
-    <header>
+<header>
 
-        <div class="logo">
+<div class="logo">
+SPECTRA GUARD
+</div>
 
-            SPECTRA GUARD
-
-        </div>
-
-    </header>
+</header>
 
 
 
-    <!-- =========================
-         Hero Section
-    ========================== -->
+<main>
 
-    <main>
 
-        <section class="hero">
+<section class="hero">
 
-            <h1>
-                Know what websites may learn about you.
-            </h1>
 
-            <p>
-                Analyze cookies, trackers, permissions and privacy signals
-                before you trust a website.
-            </p>
-            <div class="scan-box">
+<h1>
+Know what websites may learn about you.
+</h1>
 
-    <input
-    id="urlInput"
-    type="url"
-    placeholder="https://example.com">
 
-    <button id="analyzeBtn">
-        Analyze
-    </button>
+<p>
+Analyze website security, trackers, cookies and privacy signals before you trust a website.
+</p>
+
+
+
+<div class="scan-box">
+
+
+<input
+id="urlInput"
+type="url"
+placeholder="https://example.com">
+
+
+
+<button id="analyzeBtn">
+Analyze
+</button>
+
 
 </div>
+
+
 
 
 <div id="scannerAnimation" class="scanner-animation hidden">
 
-    <div class="scanner-line"></div>
 
-    <p>
-        Analyzing website security...
-    </p>
+<div class="scanner-line"></div>
 
 
-    <div class="scan-steps">
+<p>
+Analyzing website security...
+</p>
 
-        <div id="step1">
-            ◯ Checking HTTPS
-        </div>
 
-        <div id="step2">
-            ◯ Detecting cookies
-        </div>
 
-        <div id="step3">
-            ◯ Finding trackers
-        </div>
+<div class="scan-steps">
 
-        <div id="step4">
-            ◯ Generating report
-        </div>
 
-    </div>
+<div id="step1">
+◯ Checking HTTPS
+</div>
+
+
+<div id="step2">
+◯ Detecting cookies
+</div>
+
+
+<div id="step3">
+◯ Finding trackers
+</div>
+
+
+<div id="step4">
+◯ Generating report
+</div>
+
 
 </div>
-<!-- =========================
-     Results
-========================= -->
+
+
+</div>
+
+
+
+
+
 
 <section id="results" class="results hidden">
 
-    <div class="score-card">
 
-        <h2>Privacy Score</h2>
 
-       <div class="score-circle">
+<div class="score-card">
 
-    <div class="score">
 
-        <span id="scoreNumber">0</span>
+<h2>
+Security Score
+</h2>
 
-        <small>/100</small>
 
-    </div>
+
+<div class="score-circle">
+
+
+<div class="score">
+
+
+<span id="scoreNumber">
+0
+</span>
+
+
+<small>
+/100
+</small>
+
 
 </div>
 
-    <div class="info-grid">
-
-    <div class="info-card safe">
-
-        <div class="status">
-            🟢 Safe
-        </div>
-
-        <h3>HTTPS</h3>
-
-       <p id="httpsResult">
-    Checking...
-</p>
-    </div>
-
-
-
-    <div class="info-card warning">
-
-        <div class="status">
-            🟡 Warning
-        </div>
-
-        <h3>Trackers</h3>
-
-        <p id="trackerResult">
-    Checking...
-</p>
-
-    </div>
-
-
-
-    <div class="info-card warning">
-
-        <div class="status">
-            🟡 Warning
-        </div>
-
-        <h3>Cookies</h3>
-
-        <p id="cookieResult">
-    Checking...
-</p>
-
-    </div>
-
-
-
-    <div class="info-card safe">
-
-        <div class="status">
-            🟢 Safe
-        </div>
-
-        <h3>Permissions</h3>
-
-        <p>
-            No suspicious permissions
-        </p>
-
-    </div>
 
 </div>
-<!-- Report Summary -->
+
+
+</div>
+
+
+
+
+
+
+
+<div class="info-grid">
+
+
+
+<div class="info-card safe">
+
+
+<div class="status">
+🟢 Status
+</div>
+
+
+<h3>
+HTTPS
+</h3>
+
+
+<p id="httpsResult">
+Checking...
+</p>
+
+
+</div>
+
+
+
+
+
+<div class="info-card warning">
+
+
+<div class="status">
+🟡 Status
+</div>
+
+
+<h3>
+Trackers
+</h3>
+
+
+<p id="trackerResult">
+Checking...
+</p>
+
+
+</div>
+
+
+
+
+
+<div class="info-card warning">
+
+
+<div class="status">
+🟡 Status
+</div>
+
+
+<h3>
+Cookies
+</h3>
+
+
+<p id="cookieResult">
+Checking...
+</p>
+
+
+</div>
+
+
+
+
+
+<div class="info-card">
+
+
+<div class="status">
+⚠ Risk
+</div>
+
+
+<h3>
+Risk Level
+</h3>
+
+
+<p id="riskResult">
+Checking...
+</p>
+
+
+</div>
+
+
+
+
+</div>
+
+
+
+
+
+
+
+
 
 <div class="report-summary">
 
-    <h2>
-        Analysis Report
-    </h2>
+
+<h2>
+Security Analysis
+</h2>
 
 
-    <div class="report-item">
 
-        <span>Tracking Risk</span>
+<div class="report-item">
 
-        <strong class="medium">
-            Medium
-        </strong>
-
-    </div>
+<span>
+Detected Issues
+</span>
 
 
-    <div class="report-item">
-
-        <span>Data Collection</span>
-
-        <strong class="medium">
-            Moderate
-        </strong>
-
-    </div>
-
-
-    <div class="report-item">
-
-        <span>Security Connection</span>
-
-        <strong class="good">
-            Protected
-        </strong>
-
-    </div>
-
-
-    <div class="recommendations">
-
-        <h3>
-            Recommendations
-        </h3>
-
-
-        <ul>
-
-            <li>
-                HTTPS connection is enabled.
-            </li>
-
-            <li>
-                Review third-party trackers.
-            </li>
-
-            <li>
-                Check cookie permissions.
-            </li>
-
-        </ul>
-
-    </div>
+<p id="issuesResult">
+Scanning...
+</p>
 
 
 </div>
+
+
+
+
+
+<div class="recommendations">
+
+
+<h3>
+Recommendations
+</h3>
+
+
+<ul id="recommendationList">
+
+
+<li>
+Waiting for scan...
+</li>
+
+
+</ul>
+
+
+</div>
+
+
+
+</div>
+
+
+
+
 </section>
-    </main>
+
+
+</section>
 
 
 
-    <!-- JavaScript -->
-    <script src="assets/js/scanner.js"></script>
-    <script src="assets/js/ui.js"></script>
-    <script src="assets/js/app.js"></script>
+</main>
+
+
+
+
+
+<script src="assets/js/scanner.js"></script>
+<script src="assets/js/ui.js"></script>
+<script src="assets/js/app.js"></script>
+
+
 
 </body>
 
