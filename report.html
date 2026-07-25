@@ -8,14 +8,23 @@
 
 <title>Spectra Guard Report</title>
 
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+<link href="https://fonts.googleapis.com/css2?family=Audiowide&family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+
+
 <link rel="stylesheet" href="assets/css/variables.css">
 <link rel="stylesheet" href="assets/css/style.css">
 <link rel="stylesheet" href="assets/css/animations.css">
+
 
 </head>
 
 
 <body>
+
 
 
 <header>
@@ -29,7 +38,12 @@ SPECTRA GUARD
 
 
 
+
 <main class="report-page">
+
+
+
+<section class="report-header">
 
 
 <h1>
@@ -38,8 +52,15 @@ Security Report
 
 
 <p id="websiteName">
-Scanning website...
+Analyzing website...
 </p>
+
+
+</section>
+
+
+
+
 
 
 
@@ -53,7 +74,11 @@ Security Score
 </h2>
 
 
+
 <div class="score-circle">
+
+
+<div class="score-value">
 
 <span id="score">
 0
@@ -66,13 +91,19 @@ Security Score
 </div>
 
 
+</div>
+
+
 
 <h3 id="risk">
 Checking risk...
 </h3>
 
 
+
 </section>
+
+
 
 
 
@@ -83,32 +114,53 @@ Checking risk...
 <section class="info-grid">
 
 
+
 <div class="info-card">
 
+<div class="status">
+🔒 HTTPS
+</div>
+
+
 <h3>
-HTTPS
+Connection
 </h3>
+
 
 <p id="https">
 Checking...
 </p>
 
+
 </div>
 
 
 
 
+
+
+
 <div class="info-card">
+
+
+<div class="status">
+🍪 Cookies
+</div>
+
 
 <h3>
 Cookies
 </h3>
 
+
 <p id="cookies">
 Checking...
 </p>
 
+
 </div>
+
+
 
 
 
@@ -116,15 +168,26 @@ Checking...
 
 <div class="info-card">
 
+
+<div class="status">
+📡 Trackers
+</div>
+
+
 <h3>
 Trackers
 </h3>
+
 
 <p id="trackers">
 Checking...
 </p>
 
+
 </div>
+
+
+
 
 
 
@@ -138,7 +201,32 @@ Checking...
 
 
 
-<section class="report-summary">
+<section class="report-box">
+
+
+<h2>
+Detected Issues
+</h2>
+
+
+<div id="issues">
+
+Loading...
+
+</div>
+
+
+</section>
+
+
+
+
+
+
+
+
+
+<section class="report-box">
 
 
 <h2>
@@ -148,12 +236,22 @@ Vulnerabilities
 
 <div id="vulnerabilities">
 
-Scanning...
+Loading...
 
 </div>
 
 
+</section>
 
+
+
+
+
+
+
+
+
+<section class="report-box">
 
 
 <h2>
@@ -170,14 +268,31 @@ Loading...
 </ul>
 
 
-
 </section>
 
 
 
 
 
+
+
+
+
+<button 
+onclick="window.location.href='index.html'"
+class="back-btn">
+
+Scan Another Website
+
+</button>
+
+
+
+
+
+
 </main>
+
 
 
 
